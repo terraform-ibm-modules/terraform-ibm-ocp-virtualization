@@ -22,7 +22,7 @@ repository:
 
   # Uncomment this description property
   # and update the description to the current repo description.
-  # description: ""
+  description: "OpenShift Virtualization enables you to run VM workloads alongside containerized apps within the fully managed Red Hat OpenShift on IBM Cloud offering."
 
   # Use a comma-separated list of topics to set on the repo (ensure not to use any caps in the topic string).
   topics: terraform, ibm-cloud, terraform-module, core-team, virtualization, ocp, openshift, vm
