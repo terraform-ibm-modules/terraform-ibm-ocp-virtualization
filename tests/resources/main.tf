@@ -1,6 +1,6 @@
-########################################################################################################################
+##############################################################################
 # Resource Group
-########################################################################################################################
+##############################################################################
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
@@ -76,24 +76,27 @@ locals {
   ]
 }
 
+locals {
+  cluster_name = "${var.prefix}-cluster"
+}
+
 module "ocp_base" {
-  # source             = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  # version            = "3.46.14"
-  source               = "git::https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc.git?ref=add"
-  resource_group_id    = module.resource_group.resource_group_id
-  region               = var.region
-  tags                 = var.resource_tags
-  cluster_name         = var.prefix
-  force_delete_storage = true
-  vpc_id               = ibm_is_vpc.vpc.id
-  vpc_subnets          = local.cluster_vpc_subnets
-  ocp_version          = var.ocp_version
-  worker_pools         = local.worker_pools
-  access_tags          = var.access_tags
-  ocp_entitlement      = var.ocp_entitlement
+  # source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
+  # version                             = "3.48.0"
+  source                              = "git::https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc.git?ref=add"
+  resource_group_id                   = module.resource_group.resource_group_id
+  region                              = var.region
+  tags                                = var.resource_tags
+  cluster_name                        = local.cluster_name
+  force_delete_storage                = true
+  vpc_id                              = ibm_is_vpc.vpc.id
+  ocp_version = "4.17"
+  vpc_subnets                         = local.cluster_vpc_subnets
+  worker_pools                        = local.worker_pools
+  access_tags                         = []
+  disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.
   addons = {
-    "vpc-file-csi-driver" = { version = "2.0" }
-    "openshift-data-foundation" = {
+    openshift-data-foundation = {
       version         = "4.17.0"
       parameters_json = <<PARAMETERS_JSON
         {
@@ -103,13 +106,8 @@ module "ocp_base" {
         }
         PARAMETERS_JSON
     }
+    vpc-file-csi-driver = {
+      version = "2.0"
+    }
   }
-  disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.
-}
-
-module "virtualization" {
-  depends_on                = [module.ocp_base]
-  source                    = "../.."
-  cluster_id                = module.ocp_base.cluster_id
-  cluster_resource_group_id = module.ocp_base.resource_group_id
 }
