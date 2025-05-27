@@ -204,13 +204,19 @@
                             "ignore_auto_referencing": [
                                 "*"
                             ],
-                            "optional": false,
+                            "optional": true,
                             "on_by_default": true,
                             "input_mapping": [
                                 {
                                     "dependency_input": "addons",
                                     "value": {
-                                        "openshift-ai": "416"
+                                        "openshift-data-foundation": {
+                                            "version": "4.18.0",
+                                            "parameters_json": "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
+                                        },
+                                        "vpc-file-csi-driver": {
+                                            "version": "2.0"
+                                        }
                                     }
                                 },
                                 {
@@ -224,29 +230,8 @@
                                     "reference_version": true
                                 },
                                 {
-                                    "dependency_input": "default_worker_pool_machine_type",
-                                    "version_input": "default_worker_pool_machine_type",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_workers_per_zone",
-                                    "version_input": "default_worker_pool_workers_per_zone",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_operating_system",
-                                    "version_input": "default_worker_pool_operating_system",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_secondary_storage",
-                                    "version_input": "default_gpu_worker_pool_storage",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "additional_worker_pools",
-                                    "version_input": "additional_worker_pools",
-                                    "reference_version": true
+                                    "dependency_input": "disable_outbound_traffic_protection",
+                                    "value": true
                                 }
                             ],
                             "version": "^v3.43.1"
