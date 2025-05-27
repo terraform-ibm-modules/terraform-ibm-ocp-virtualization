@@ -139,6 +139,31 @@
                             }
                         },
                         {
+                            "key": "ocp_version",
+                            "required": true
+                        },
+                        {
+                            "key": "default_worker_pool_machine_type",
+                            "required": true
+                        },
+                        {
+                            "key": "default_worker_pool_workers_per_zone",
+                            "required": true
+                        },
+                        {
+                            "key": "default_worker_pool_operating_system",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "Red Hat CoreOS",
+                                    "value": "RHCOS"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "additional_worker_pools"
+                        },
+                        {
                             "key": "vpc_file_default_storage_class"
                         },
                         {
@@ -211,7 +236,7 @@
                                     "dependency_input": "addons",
                                     "value": {
                                         "openshift-data-foundation": {
-                                            "version": "4.18.0",
+                                            "version": "4.17.0",
                                             "parameters_json": "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
                                         },
                                         "vpc-file-csi-driver": {
@@ -220,18 +245,41 @@
                                     }
                                 },
                                 {
-                                    "dependency_input": "prefix",
-                                    "version_input": "prefix",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "existing_resource_group_name",
-                                    "version_input": "existing_resource_group_name",
-                                    "reference_version": true
-                                },
-                                {
                                     "dependency_input": "disable_outbound_traffic_protection",
                                     "value": true
+                                },
+                                {
+                                    "dependency_input": "ocp_version",
+                                    "version_input": "ocp_version",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "default_worker_pool_machine_type",
+                                    "version_input": "default_worker_pool_machine_type",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "default_worker_pool_workers_per_zone",
+                                    "version_input": "default_worker_pool_workers_per_zone",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "default_worker_pool_operating_system",
+                                    "version_input": "default_worker_pool_operating_system",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "additional_worker_pools",
+                                    "version_input": "additional_worker_pools",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_output": "cluster_id",
+                                    "version_input": "cluster_id"
+                                },
+                                {
+                                    "dependency_output": "resource_group_id",
+                                    "version_input": "cluster_resource_group_id"
                                 }
                             ],
                             "version": "^v3.43.1"

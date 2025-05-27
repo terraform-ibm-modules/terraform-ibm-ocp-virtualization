@@ -70,3 +70,69 @@ variable "workloads_node_selectors" {
     values = ["physical"]
   }]
 }
+
+# tflint-ignore: all
+variable "ocp_version" {
+  type        = string
+  description = "Version of the OCP cluster to provision. OpenShift Virtualization is supported from ocp version 4.17 and above."
+  default     = "4.17"
+
+  validation {
+    condition     = tonumber(var.ocp_version) >= 4.17
+    error_message = "To install Red Hat OpenShift Virtualization, all worker node should be a bare metal server."
+  }
+}
+
+# tflint-ignore: all
+variable "default_worker_pool_machine_type" {
+  type        = string
+  description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/openshift?topic=openshift-vpc-flavors)"
+  default     = "cx2d.metal.96x192"
+
+  validation {
+    condition     = split(".", var.default_worker_pool_machine_type)[1] == "metal"
+    error_message = "To install Red Hat OpenShift Virtualization, all worker node should be a bare metal server."
+  }
+}
+
+# tflint-ignore: all
+variable "default_worker_pool_workers_per_zone" {
+  type        = number
+  description = "Defines the number of worker nodes to provision in each zone for the default worker pool. Overall cluster must have at least 2 worker nodes, but individual worker pools may have fewer nodes per zone."
+  default     = 2
+}
+
+# tflint-ignore: all
+variable "default_worker_pool_operating_system" {
+  type        = string
+  description = "Provide the operating system for the worker nodes in the default worker pool. OpenShift Virtualization installation is supported only on RHCOS operating system. Refer [here](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_versions) for supported Operating Systems"
+  default     = "RHCOS"
+
+  validation {
+    condition     = var.default_worker_pool_operating_system == "RHCOS"
+    error_message = "Invalid operating system. Allowed values is 'RHCOS'."
+  }
+}
+
+# tflint-ignore: all
+variable "additional_worker_pools" {
+  type = list(object({
+    vpc_subnets = optional(list(object({
+      id         = string
+      zone       = string
+      cidr_block = string
+    })), [])
+    pool_name                     = string
+    machine_type                  = string
+    workers_per_zone              = number
+    operating_system              = string
+    labels                        = optional(map(string))
+    minSize                       = optional(number)
+    secondary_storage             = optional(string)
+    maxSize                       = optional(number)
+    enableAutoscaling             = optional(bool)
+    additional_security_group_ids = optional(list(string))
+  }))
+  description = "List of additional worker pools with custom configurations to accommodate diverse VM workload requirements within the cluster. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/fully-configurable/DA_docs.md#options-with-worker-pools)"
+  default     = []
+}
