@@ -32,7 +32,7 @@ variable "existing_resource_group_name" {
 variable "region" {
   type        = string
   description = "Region to provision all resources created by this example"
-  default     = "ca-tor"
+  default     = "us-south"
 }
 
 
@@ -71,9 +71,9 @@ variable "address_prefix" {
 }
 
 variable "zone" {
-  type = number
+  type        = number
   description = "value"
-  default = 2
+  default     = 2
 }
 ##############################################################################
 # Cluster variables
