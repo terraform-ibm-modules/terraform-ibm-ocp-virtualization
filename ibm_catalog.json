@@ -38,10 +38,10 @@
             "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
             "flavors": [
                 {
-                    "label": "Fully configurable",
-                    "name": "fully-configurable",
+                    "label": "QuickStart",
+                    "name": "quickstart",
                     "install_type": "fullstack",
-                    "working_directory": "solutions/fully-configurable",
+                    "working_directory": "solutions/quickstart",
                     "iam_permissions": [
                         {
                             "role_crns": [
@@ -97,7 +97,7 @@
                                 "description": "No"
                             },
                             {
-                                "title": "Enable OpenShift AI on Cluster",
+                                "title": "Enable OpenShift Virtualization on Cluster",
                                 "description": "Yes"
                             }
                         ],
@@ -114,44 +114,44 @@
                     },
                     "configuration": [
                         {
-                            "key": "ibmcloud_api_key",
+                            "key": "ibmcloud_api_key"
+                        },
+                        {
+                            "key": "prefix",
                             "required": true
                         },
                         {
-                            "key": "cluster_id",
-                            "custom_config": {
-                                "type": "cluster_var",
-                                "grouping": "deployment",
-                                "original_grouping": "deployment"
-                            },
-                            "required": true
-                        },
-                        {
-                            "key": "cluster_resource_group_id",
+                            "key": "existing_resource_group_name",
                             "required": true,
                             "custom_config": {
                                 "type": "resource_group",
                                 "grouping": "deployment",
                                 "original_grouping": "deployment",
                                 "config_constraints": {
-                                    "identifier": "rg_id"
+                                    "identifier": "rg_name"
                                 }
                             }
                         },
                         {
                             "key": "ocp_version",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "4.17",
+                                    "value": "4.17"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "machine_type",
                             "required": true
                         },
                         {
-                            "key": "default_worker_pool_machine_type",
+                            "key": "workers_per_zone",
                             "required": true
                         },
                         {
-                            "key": "default_worker_pool_workers_per_zone",
-                            "required": true
-                        },
-                        {
-                            "key": "default_worker_pool_operating_system",
+                            "key": "operating_system",
                             "required": true,
                             "options": [
                                 {
@@ -161,7 +161,71 @@
                             ]
                         },
                         {
-                            "key": "additional_worker_pools"
+                            "key": "cluster_resource_tags",
+                            "custom_config": {
+                                "type": "array",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "access_tags",
+                            "custom_config": {
+                                "type": "array",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "ocp_entitlement"
+                        },
+                        {
+                            "key": "cluster_ready_when",
+                            "options": [
+                                {
+                                    "displayname": "Normal",
+                                    "value": "Normal"
+                                },
+                                {
+                                    "displayname": "IngressReady",
+                                    "value": "IngressReady"
+                                },
+                                {
+                                    "displayname": "OneWorkerNodeReady",
+                                    "value": "OneWorkerNodeReady"
+                                },
+                                {
+                                    "displayname": "MasterNodeReady",
+                                    "value": "MasterNodeReady"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "addons"
+                        },
+                        {
+                            "key": "address_prefix"
+                        },
+                        {
+                            "key": "cluster_name"
+                        },
+                        {
+                            "key": "region"
+                        },
+                        {
+                            "key": "resource_tags"
+                        },
+                        {
+                            "key": "vpc_resource_tags"
+                        },
+                        {
+                            "key": "zone"
                         },
                         {
                             "key": "vpc_file_default_storage_class"
@@ -216,73 +280,6 @@
                         },
                         {
                             "key": "wait_till_timeout"
-                        }
-                    ],
-                    "dependencies": [
-                        {
-                            "name": "add-ons-beta-deploy-arch-ibm-base-ocp-vpc",
-                            "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-                            "flavors": [
-                                "fully-configurable"
-                            ],
-                            "id": "1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global",
-                            "ignore_auto_referencing": [
-                                "*"
-                            ],
-                            "optional": true,
-                            "on_by_default": true,
-                            "input_mapping": [
-                                {
-                                    "dependency_input": "addons",
-                                    "value": {
-                                        "openshift-data-foundation": {
-                                            "version": "4.17.0",
-                                            "parameters_json": "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
-                                        },
-                                        "vpc-file-csi-driver": {
-                                            "version": "2.0"
-                                        }
-                                    }
-                                },
-                                {
-                                    "dependency_input": "disable_outbound_traffic_protection",
-                                    "value": true
-                                },
-                                {
-                                    "dependency_input": "ocp_version",
-                                    "version_input": "ocp_version",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_machine_type",
-                                    "version_input": "default_worker_pool_machine_type",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_workers_per_zone",
-                                    "version_input": "default_worker_pool_workers_per_zone",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "default_worker_pool_operating_system",
-                                    "version_input": "default_worker_pool_operating_system",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "additional_worker_pools",
-                                    "version_input": "additional_worker_pools",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_output": "cluster_id",
-                                    "version_input": "cluster_id"
-                                },
-                                {
-                                    "dependency_output": "resource_group_id",
-                                    "version_input": "cluster_resource_group_id"
-                                }
-                            ],
-                            "version": "^v3.43.1"
                         }
                     ],
                     "dependency_version_2": true
