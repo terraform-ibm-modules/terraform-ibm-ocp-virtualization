@@ -10,16 +10,22 @@ variable "ibmcloud_api_key" {
 
 variable "prefix" {
   type        = string
-  description = "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To not use any prefix value, you can set this value to `null` or an empty string."
   nullable    = true
+  description = "The prefix to be added to all resources created by this solution. To skip using a prefix, set this value to null or an empty string. The prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It should not exceed 16 characters, must not end with a hyphen('-'), and can not contain consecutive hyphens ('--'). Example: `prod-0205-openshift`. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md)"
+
   validation {
-    condition = (var.prefix == null ? true :
+    condition = (var.prefix == null || var.prefix == "" ? true :
       alltrue([
-        can(regex("^[a-z]{0,1}[-a-z0-9]{0,14}[a-z0-9]{0,1}$", var.prefix)),
-        length(regexall("^.*--.*", var.prefix)) == 0
+        can(regex("^[a-z][-a-z0-9]*[a-z0-9]$", var.prefix)),
+        length(regexall("--", var.prefix)) == 0
       ])
     )
-    error_message = "Prefix must begin with a lowercase letter, contain only lowercase letters, numbers, and - characters. Prefixes must end with a lowercase letter or number and be 16 or fewer characters."
+    error_message = "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--')."
+  }
+  validation {
+    # must not exceed 16 characters in length
+    condition     = length(var.prefix) <= 16
+    error_message = "Prefix must not exceed 16 characters."
   }
 }
 
@@ -65,15 +71,19 @@ variable "access_tags" {
 ##############################################################################
 
 variable "address_prefix" {
-  description = "OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes"
+  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes."
   type        = string
   default     = "10.10.10.0/24"
 }
 
 variable "zone" {
   type        = number
-  description = "value"
-  default     = 2
+  description = "Specify the zone to which the cluster will be deployed."
+  default     = 1
+  validation {
+    condition     = contains([1, 2, 3], var.zone)
+    error_message = "Each region has only 3 zones."
+  }
 }
 ##############################################################################
 # Cluster variables
@@ -92,7 +102,7 @@ variable "ocp_version" {
 
   validation {
     condition     = tonumber(var.ocp_version) >= 4.17
-    error_message = "To install Red Hat OpenShift Virtualization, all worker node should be a bare metal server."
+    error_message = "To install Red Hat OpenShift Virtualization, all `ocp_version` should be higher than `4.17`."
   }
 }
 
@@ -180,7 +190,7 @@ variable "addons" {
       parameters_json = optional(string)
     }))
   })
-  description = "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions"
+  description = "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-addons)"
   nullable    = false
   default = {
     openshift-data-foundation = {

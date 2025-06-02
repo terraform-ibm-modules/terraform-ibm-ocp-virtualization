@@ -3,9 +3,13 @@ package test
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -14,9 +18,31 @@ import (
 const resourceGroup = "geretain-test-resources"
 const tfFullstackDADir = "solutions/quickstart"
 
+// Define a struct with fields that match the structure of the YAML data
+const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
+
+var (
+	sharedInfoSvc      *cloudinfo.CloudInfoService
+	permanentResources map[string]interface{}
+)
+
+// TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
+// for multiple tests
+func TestMain(m *testing.M) {
+	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+
+	var err error
+	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	os.Exit(m.Run())
+}
+
 /*******************************************************************
-* TESTS FOR THE TERRAFORM BASED FULLSTACK DEPLOYABLE ARCHITECTURE  *
-*******************************************************************/
+* TESTS FOR THE TERRAFORM BASED QUICKSTART DEPLOYABLE ARCHITECTURE *
+********************************************************************/
 func TestRunQuickstartDASchematics(t *testing.T) {
 	t.Parallel()
 
@@ -67,9 +93,3 @@ func TestRunQuickstartDAUpgrade(t *testing.T) {
 		assert.NotNil(t, output, "Expected some output")
 	}
 }
-
-/*******************************************************************
-* TESTS FOR THE TERRAFORM BASED EXTENSION DEPLOYABLE ARCHITECTURE  *
-*******************************************************************/
-
-// TODO: Add tests

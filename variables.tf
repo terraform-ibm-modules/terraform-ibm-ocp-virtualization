@@ -1,30 +1,3 @@
-########################################################################################################################
-# Input variables
-########################################################################################################################
-
-# variable "ibmcloud_api_key" {
-#   type        = string
-#   description = "The IBM Cloud API key."
-#   sensitive   = true
-# }
-
-# variable "provider_visibility" {
-#   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
-#   type        = string
-#   default     = "public"
-
-#   validation {
-#     condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
-#     error_message = "Invalid visibility option. Allowed values are 'public', 'private', or 'public-and-private'."
-#   }
-# }
-
-# variable "region" {
-#   type        = string
-#   description = "The region in which to provision all resources created by this solution."
-#   default     = "us-south"
-# }
-
 ##############################################################################
 # Cluster variables
 ##############################################################################
@@ -71,20 +44,6 @@ variable "wait_till_timeout" {
   type        = number
   default     = 90
 }
-
-# variable "provision_odf_addon" {
-#   type        = bool
-#   default     = false
-#   nullable    = false # null values are set to default value
-#   description = "Set this variable to true to install OpenShift Data Foundation addon in your existing cluster."
-# }
-
-# variable "provision_vpc_file_addon" {
-#   type        = bool
-#   default     = false
-#   nullable    = false # null values are set to default value
-#   description = "Set this variable to true to install File Storage for VPC addon in your existing cluster."
-# }
 
 variable "vpc_file_default_storage_class" {
   description = "The name of the VPC File storage class which will be set as the default storage class."
