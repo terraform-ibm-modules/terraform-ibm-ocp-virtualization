@@ -90,7 +90,7 @@ module "ocp_base" {
   version                             = "3.49.0"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
-  tags                                = var.resource_tags
+  tags                                = var.cluster_resource_tags
   cluster_name                        = local.cluster_name
   force_delete_storage                = true
   vpc_id                              = module.vpc.vpc_id
@@ -99,6 +99,7 @@ module "ocp_base" {
   worker_pools                        = local.worker_pools
   access_tags                         = var.access_tags
   ocp_entitlement                     = var.ocp_entitlement
+  addons                              = var.addons
   cluster_ready_when                  = var.cluster_ready_when
   disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.
 }

@@ -219,9 +219,6 @@
                             "key": "region"
                         },
                         {
-                            "key": "resource_tags"
-                        },
-                        {
                             "key": "vpc_resource_tags"
                         },
                         {
