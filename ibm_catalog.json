@@ -2,7 +2,7 @@
     "products": [
         {
             "name": "deploy-arch-ibm-ocp-virtualization",
-            "label": "[Add-ons Beta] Cloud automation for Red Hat OpenShift Virtualization",
+            "label": "Cloud automation for Red Hat OpenShift Virtualization",
             "product_kind": "solution",
             "tags": [
                 "containers",
@@ -25,14 +25,14 @@
                 "solution"
             ],
             "short_description": "Rapidly deploy Red Hat OpenShift clusters on Virtual Private Cloud (VPC) pre-configured with OpenShift Virtualization capabilities for VM workloads.",
-            "long_description": "This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
+            "long_description": "Red Hat® OpenShift® Virtualization, provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
             "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/README.md",
             "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/main/images/rh_ocp.svg",
             "provider_name": "IBM",
             "features": [
                 {
-                    "title": "OpenShift Virtualization Deployment",
-                    "description": "Automates the provisioning of a fully configured Red Hat OpenShift Cluster on VPC with OpenShift Virtualization capabilities on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization. Refer the documentation to better understand the service and its capabilities: https://cloud.ibm.com/docs/openshift?topic=openshift-ai-addon-about"
+                    "title": "OpenShift Virtualization",
+                    "description": "Automates the provisioning of a fully configured Red Hat OpenShift Cluster on VPC with OpenShift Virtualization capabilities on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)"
                 }
             ],
             "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -81,24 +81,16 @@
                     "architecture": {
                         "features": [
                             {
-                                "title": "Create Resource Group",
-                                "description": "No"
+                                "title": "Virtual Private Cloud",
+                               "description": "This solution supports creates a Virtual private cloud to deploy the RedHat Openshift Cluster."
                             },
                             {
-                                "title": "Use Existing Resource Group",
-                                "description": "Yes"
+                                "title": "Red Hat OpenShift Cluster",
+                                "description": "This solution supports deploying a Red Hat OpenShift cluster with OpenShift Virtualization pre-installed."
                             },
                             {
-                                "title": "Create Red Hat OpenShift Cluster",
-                                "description": "Yes"
-                            },
-                            {
-                                "title": "Use Existing Red Hat OpenShift Cluster",
-                                "description": "No"
-                            },
-                            {
-                                "title": "Enable OpenShift Virtualization on Cluster",
-                                "description": "Yes"
+                                "title": "OpenShift Virtualization",
+                                "description": "Configure OpenShift Virtualization by installing the appropriate operator."
                             }
                         ],
                         "diagrams": [
@@ -108,7 +100,7 @@
                                     "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-ai/main/reference-architecture/deployable-architecture-ocp-virtualization-cluster.svg",
                                     "type": "image/svg+xml"
                                 },
-                                "description": "This architecture illustrates the deployment of Red Hat OpenShift cluster integrated with an Openshift Virtualization, showcasing the key components and their interactions for VM workload support."
+                                "description": "This architecture illustrates the deployment of Red Hat OpenShift cluster on a Virtual private Cloud integrated with an Openshift Virtualization, showcasing the key components and their interactions for VM workload support."
                             }
                         ]
                     },
