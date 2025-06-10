@@ -123,11 +123,6 @@ variable "machine_type" {
   type        = string
   description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/openshift?topic=openshift-vpc-flavors)"
   default     = "cx2d.metal.96x192"
-
-  validation {
-    condition     = split(".", var.machine_type)[1] == "metal"
-    error_message = "To install Red Hat OpenShift Virtualization, all worker node should be a bare metal server."
-  }
 }
 
 variable "operating_system" {

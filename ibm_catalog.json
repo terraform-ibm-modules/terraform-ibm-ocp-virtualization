@@ -54,20 +54,6 @@
                                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                                 "crn:v1:bluemix:public:iam::::role:Editor"
                             ],
-                            "service_name": "hs-crypto"
-                        },
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-                                "crn:v1:bluemix:public:iam::::role:Editor"
-                            ],
-                            "service_name": "kms"
-                        },
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-                                "crn:v1:bluemix:public:iam::::role:Editor"
-                            ],
                             "service_name": "cloud-object-storage"
                         },
                         {
@@ -82,7 +68,7 @@
                         "features": [
                             {
                                 "title": "Virtual Private Cloud",
-                               "description": "This solution supports creates a Virtual private cloud to deploy the RedHat Openshift Cluster."
+                                "description": "This solution supports creates a Virtual private cloud to deploy the RedHat Openshift Cluster."
                             },
                             {
                                 "title": "Red Hat OpenShift Cluster",
@@ -125,6 +111,12 @@
                             }
                         },
                         {
+                            "key": "region"
+                        },
+                        {
+                            "key": "zone"
+                        },
+                        {
                             "key": "ocp_version",
                             "required": true,
                             "options": [
@@ -136,7 +128,33 @@
                         },
                         {
                             "key": "machine_type",
-                            "required": true
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "bx2.metal.96x384",
+                                    "value": "bx2.metal.96x384"
+                                },
+                                {
+                                    "displayname": "bx2d.metal.96x384",
+                                    "value": "bx2d.metal.96x384"
+                                },
+                                {
+                                    "displayname": "cx2.metal.96x192",
+                                    "value": "cx2.metal.96x192"
+                                },
+                                {
+                                    "displayname": "cx2d.metal.96x192",
+                                    "value": "cx2d.metal.96x192"
+                                },
+                                {
+                                    "displayname": "mx2.metal.96x768",
+                                    "value": "mx2.metal.96x768"
+                                },
+                                {
+                                    "displayname": "mx2d.metal.96x768",
+                                    "value": "mx2d.metal.96x768"
+                                }
+                            ]
                         },
                         {
                             "key": "workers_per_zone",
@@ -208,13 +226,7 @@
                             "key": "cluster_name"
                         },
                         {
-                            "key": "region"
-                        },
-                        {
                             "key": "vpc_resource_tags"
-                        },
-                        {
-                            "key": "zone"
                         },
                         {
                             "key": "vpc_file_default_storage_class"
