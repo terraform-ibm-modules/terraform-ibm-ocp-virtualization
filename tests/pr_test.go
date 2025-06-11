@@ -65,6 +65,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		// use options.Prefix here to generate a unique prefix every time so resource group name is unique for every test
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "machine_type", Value: "bx2.4x16", DataType: "string"},
 	}
 
 	err := options.RunSchematicTest()
@@ -85,6 +86,7 @@ func TestRunQuickstartDAUpgrade(t *testing.T) {
 	options.TerraformVars = map[string]interface{}{
 		"prefix":                       options.Prefix,
 		"existing_resource_group_name": resourceGroup,
+		"machine_type":                 "bx2.4x16",
 	}
 
 	output, err := options.RunTestUpgrade()

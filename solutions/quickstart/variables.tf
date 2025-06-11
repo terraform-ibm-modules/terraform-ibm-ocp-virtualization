@@ -34,7 +34,7 @@ variable "existing_resource_group_name" {
 
 variable "region" {
   type        = string
-  description = "Region to provision all resources created by this example"
+  description = "Region where the all cluster resources will be provisioned."
   default     = "us-south"
 }
 

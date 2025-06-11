@@ -111,10 +111,34 @@
                             }
                         },
                         {
-                            "key": "region"
+                            "key": "region",
+                            "required": true,
+                            "custom_config": {
+                                "type": "vpc_region",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "generationType": "2"
+                                }
+                            }
                         },
                         {
-                            "key": "zone"
+                            "key": "zone",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "1",
+                                    "value": 1
+                                },
+                                {
+                                    "displayname": "2",
+                                    "value": 2
+                                },
+                                {
+                                    "displayname": "3",
+                                    "value": 3
+                                }
+                            ]
                         },
                         {
                             "key": "ocp_version",
@@ -157,8 +181,7 @@
                             ]
                         },
                         {
-                            "key": "workers_per_zone",
-                            "required": true
+                            "key": "workers_per_zone"
                         },
                         {
                             "key": "operating_system",
