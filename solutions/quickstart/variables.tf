@@ -179,19 +179,10 @@ variable "addons" {
   nullable    = false
   default = {
     openshift-data-foundation = {
-      # version         = "4.17.0"
-      version         = null
-      parameters_json = <<PARAMETERS_JSON
-        {
-            "osdStorageClassName":"localblock",
-            "odfDeploy":"true",
-            "autoDiscoverDevices":"true"
-        }
-        PARAMETERS_JSON
+      parameters_json = "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
     }
     vpc-file-csi-driver = {
-      # version = "2.0"
-      version = null
+      version = "2.0"
     }
   }
 }

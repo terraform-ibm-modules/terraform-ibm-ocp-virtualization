@@ -2,7 +2,6 @@
 package test
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -16,7 +15,7 @@ import (
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
-const tfFullstackDADir = "solutions/quickstart"
+const quickStartTerraformDir = "solutions/quickstart"
 
 // Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
@@ -49,8 +48,8 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 	// Set up a schematics test
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing:            t,
-		TarIncludePatterns: []string{"*.tf", fmt.Sprintf("%s/*.tf", tfFullstackDADir)},
-		TemplateFolder:     tfFullstackDADir,
+		TarIncludePatterns: []string{"*.tf", quickStartTerraformDir + "/*.*", quickStartTerraformDir + "/scripts/*.*", "kubeconfig/README.md"},
+		TemplateFolder:     quickStartTerraformDir,
 		// This is the resource group that the workspace will be created in
 		ResourceGroup:          resourceGroup,
 		Prefix:                 "qs-da",
@@ -78,7 +77,7 @@ func TestRunQuickstartDAUpgrade(t *testing.T) {
 	// Set up upgrade test
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:      t,
-		TerraformDir: tfFullstackDADir,
+		TerraformDir: quickStartTerraformDir,
 		Prefix:       "qs-da-upg",
 	})
 

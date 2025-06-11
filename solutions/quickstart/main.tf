@@ -21,7 +21,7 @@ locals {
     for count in range(1, 4) :
     "zone-${count}" => count == var.zone ? [
       {
-        name           = "${var.prefix}-subnet-1"
+        name           = "${var.prefix}-subnet-a"
         cidr           = var.address_prefix
         public_gateway = true
         acl_name       = "${var.prefix}-acl"
@@ -37,7 +37,7 @@ locals {
 
 module "vpc" {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version             = "7.23.12"
+  version             = "7.23.13"
   resource_group_id   = module.resource_group.resource_group_id
   region              = var.region
   name                = "vpc"
@@ -83,6 +83,13 @@ locals {
       operating_system = var.operating_system
     }
   ]
+
+  addons = { for key, value in var.addons :
+    key => value != null ? {
+      version         = lookup(value, "version", null) == null && key == "openshift-data-foundation" ? "${var.ocp_version}.0" : lookup(value, "version", null)
+      parameters_json = lookup(value, "parameters_json", null)
+    } : null
+  }
 }
 
 module "ocp_base" {
@@ -99,7 +106,7 @@ module "ocp_base" {
   worker_pools                        = local.worker_pools
   access_tags                         = var.access_tags
   ocp_entitlement                     = var.ocp_entitlement
-  addons                              = var.addons
+  addons                              = local.addons
   cluster_ready_when                  = var.cluster_ready_when
   disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.
 }
@@ -117,6 +124,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "virtualization" {
+  depends_on                     = [module.ocp_base]
   source                         = "../.."
   cluster_id                     = module.ocp_base.cluster_id
   cluster_resource_group_id      = module.ocp_base.resource_group_id
