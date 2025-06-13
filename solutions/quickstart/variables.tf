@@ -182,7 +182,7 @@ variable "addons" {
       parameters_json = "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
     }
     vpc-file-csi-driver = {
-      version = "2.0"
+      version = "2.0" # See, https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6290
     }
   }
 }
