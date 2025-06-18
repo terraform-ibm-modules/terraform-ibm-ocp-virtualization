@@ -52,10 +52,10 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		TemplateFolder:     quickStartTerraformDir,
 		// This is the resource group that the workspace will be created in
 		ResourceGroup:          resourceGroup,
-		Prefix:                 "qs-da",
+		Prefix:                 "virt-qs",
 		Tags:                   []string{"test-schematic"},
 		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 60,
+		WaitJobCompleteMinutes: 180,
 	})
 
 	// Pass required variables
@@ -78,7 +78,7 @@ func TestRunQuickstartDAUpgrade(t *testing.T) {
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: quickStartTerraformDir,
-		Prefix:       "qs-da-upg",
+		Prefix:       "virt-qs-upg",
 	})
 
 	// Pass required variables (NOTE: ibmcloud_api_key is passed directly in test as TF_VAR so no need to include here)
