@@ -227,24 +227,24 @@ variable "vpc_file_default_storage_class" {
 
 variable "infra_node_selectors" {
   type = list(object({
-    label  = string
+    key    = string
     values = list(string)
   }))
-  description = "List of infra node selectors to apply to HyperConverged pods."
+  description = "List of infra node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-infra)"
   default = [{
-    label  = "ibm-cloud.kubernetes.io/server-type"
+    key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["virtual", "physical"]
   }]
 }
 
 variable "workloads_node_selectors" {
   type = list(object({
-    label  = string
+    key    = string
     values = list(string)
   }))
-  description = "List of workload node selectors to apply to HyperConverged pods."
+  description = "List of workload node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-workload)"
   default = [{
-    label  = "ibm-cloud.kubernetes.io/server-type"
+    key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["physical"]
   }]
 }

@@ -3,8 +3,10 @@
 Several optional input variables in the Red Hat OpenShift cluster [Deployable Architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You can specify these inputs when you configure your deployable architecture.
 
 - [Add-ons](#options-with-addons) (`addons`)
+- [Infra node selectors](#options-with-infra) (`infra_node_selectors`)
+- [Workloads node selectors](#options-with-workload) (`workloads_node_selectors`)
 
-## Options with Add-ons <a name="options-with-addons"></a>
+## Options with `addons` <a name="options-with-addons"></a>
 
 This variable configuration allows you to specify which Red Hat OpenShift add-ons to install on your cluster and the version of each add-on to use.
 
@@ -70,4 +72,46 @@ Please refer to [this](https://cloud.ibm.com/docs/containers?topic=containers-su
     version = "2.0"
   }
 }
+```
+
+## Options with `infra_node_selectors` <a name="options-with-infra"></a>
+
+This variable configuration allows you to specify a list of key-value pairs that define the node affinity for the Virtualization Operator resources within the cluster.
+
+- Variable name: `infra_node_selectors`
+- Type: A List objects representing infra node selectors.
+
+### Options for infra_node_selectors
+
+- `key` : The label key to match against on the node.
+- `values` : (List) The list of allowed values for the name label.
+
+### Example for infra_node_selectors configuration
+
+```hcl
+[{
+    key  = "ibm-cloud.kubernetes.io/server-type"
+    values = ["virtual", "physical"]
+}]
+```
+
+## Options with `workloads_node_selectors` <a name="options-with-workload"></a>
+
+This variable configuration allows you to specify a list of key-value pairs that define the node affinity for the Virtualization VM workloads resources within the cluster.
+
+- Variable name: `workloads_node_selectors`
+- Type: A List objects representing workload node selectors.
+
+### Options for workloads_node_selectors
+
+- `key` : The label key to match against on the node.
+- `values` : (List) The list of allowed values for the name label.
+
+### Example for workloads_node_selectors configuration
+
+```hcl
+[{
+    key  = "ibm-cloud.kubernetes.io/server-type"
+    values = ["physical"]
+}]
 ```

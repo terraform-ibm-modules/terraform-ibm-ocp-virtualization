@@ -26,7 +26,7 @@ spec:
             nodeSelectorTerms:
               - matchExpressions:
                 {{- range $node_selector := .Values.infra_node_selectors }}
-                  - key: {{ $node_selector.label | quote }}
+                  - key: {{ $node_selector.key | quote }}
                     operator: In
                     values:
                       {{- range $val := $node_selector.values }}
@@ -47,7 +47,7 @@ spec:
             nodeSelectorTerms:
               - matchExpressions:
                 {{- range $node_selector := .Values.workloads_node_selectors }}
-                  - key: {{ $node_selector.label | quote }}
+                  - key: {{ $node_selector.key | quote }}
                     operator: In
                     values:
                       {{- range $val := $node_selector.values }}
