@@ -43,3 +43,45 @@ This variable defines the worker node pools for the Red Hat OpenShift cluster, w
   }
 ]
 ```
+
+## Options with `infra_node_selectors` <a name="options-with-infra"></a>
+
+This variable configuration allows you to specify a list of key-value pairs that define the node affinity for the Virtualization Operator resources within the cluster.
+
+- Variable name: `infra_node_selectors`
+- Type: A List objects representing infra node selectors.
+
+### Options for infra_node_selectors
+
+- `key` : The label key to match against on the node.
+- `values` : (List) The list of allowed values for the name label.
+
+### Example for infra_node_selectors configuration
+
+```hcl
+[{
+    key  = "ibm-cloud.kubernetes.io/server-type"
+    values = ["virtual", "physical"]
+}]
+```
+
+## Options with `workloads_node_selectors` <a name="options-with-workload"></a>
+
+This variable configuration allows you to specify a list of key-value pairs that define the node affinity for the Virtualization VM workloads resources within the cluster.
+
+- Variable name: `workloads_node_selectors`
+- Type: A List objects representing workload node selectors.
+
+### Options for workloads_node_selectors
+
+- `key` : The label key to match against on the node.
+- `values` : (List) The list of allowed values for the name label.
+
+### Example for workloads_node_selectors configuration
+
+```hcl
+[{
+    key  = "ibm-cloud.kubernetes.io/server-type"
+    values = ["physical"]
+}]
+```
