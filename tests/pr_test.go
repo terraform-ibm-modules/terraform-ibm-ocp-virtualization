@@ -108,6 +108,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		".py",
 		".tpl",
 		".md",
+		".sh",
 	}
 
 	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
