@@ -130,7 +130,7 @@ variable "workers_per_zone" {
 
 variable "machine_type" {
   type        = string
-  description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/openshift?topic=openshift-vpc-flavors)"
+  description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/vpc?topic=vpc-bare-metal-servers-profile&interface=ui#bare-metal-profile-availability-by-region)"
   default     = "cx2d.metal.96x192"
 }
 
@@ -186,12 +186,13 @@ variable "addons" {
   })
   description = "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-addons)"
   nullable    = false
+  # See, https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6290
   default = {
     openshift-data-foundation = {
       parameters_json = "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
     }
     vpc-file-csi-driver = {
-      version = "2.0" # See, https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6290
+      version = "2.0"
     }
   }
 }
