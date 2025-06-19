@@ -2,12 +2,8 @@
 package test
 
 import (
-	"fmt"
-	"io/fs"
 	"log"
 	"os"
-	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,46 +24,46 @@ var (
 	permanentResources map[string]interface{}
 )
 
-type tarIncludePatterns struct {
-	excludeDirs []string
+// type tarIncludePatterns struct {
+// 	excludeDirs []string
 
-	includeFiletypes []string
+// 	includeFiletypes []string
 
-	includeDirs []string
-}
+// 	includeDirs []string
+// }
 
-func getTarIncludePatternsRecursively(dir string, dirsToExclude []string, fileTypesToInclude []string) ([]string, error) {
-	r := tarIncludePatterns{dirsToExclude, fileTypesToInclude, nil}
-	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
-		return walk(&r, path, entry, err)
-	})
-	if err != nil {
-		fmt.Println("error")
-		return r.includeDirs, err
-	}
-	return r.includeDirs, nil
-}
+// func getTarIncludePatternsRecursively(dir string, dirsToExclude []string, fileTypesToInclude []string) ([]string, error) {
+// 	r := tarIncludePatterns{dirsToExclude, fileTypesToInclude, nil}
+// 	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
+// 		return walk(&r, path, entry, err)
+// 	})
+// 	if err != nil {
+// 		fmt.Println("error")
+// 		return r.includeDirs, err
+// 	}
+// 	return r.includeDirs, nil
+// }
 
-func walk(r *tarIncludePatterns, s string, d fs.DirEntry, err error) error {
-	if err != nil {
-		return err
-	}
-	if d.IsDir() {
-		for _, excludeDir := range r.excludeDirs {
-			if strings.Contains(s, excludeDir) {
-				return nil
-			}
-		}
-		if s == ".." {
-			r.includeDirs = append(r.includeDirs, "*.tf")
-			return nil
-		}
-		for _, includeFiletype := range r.includeFiletypes {
-			r.includeDirs = append(r.includeDirs, strings.ReplaceAll(s+"/*"+includeFiletype, "../", ""))
-		}
-	}
-	return nil
-}
+// func walk(r *tarIncludePatterns, s string, d fs.DirEntry, err error) error {
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if d.IsDir() {
+// 		for _, excludeDir := range r.excludeDirs {
+// 			if strings.Contains(s, excludeDir) {
+// 				return nil
+// 			}
+// 		}
+// 		if s == ".." {
+// 			r.includeDirs = append(r.includeDirs, "*.tf")
+// 			return nil
+// 		}
+// 		for _, includeFiletype := range r.includeFiletypes {
+// 			r.includeDirs = append(r.includeDirs, strings.ReplaceAll(s+"/*"+includeFiletype, "../", ""))
+// 		}
+// 	}
+// 	return nil
+// }
 
 // TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
 // for multiple tests
