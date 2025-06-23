@@ -49,39 +49,79 @@ variable "vpc_file_default_storage_class" {
 
 variable "infra_node_selectors" {
   type = list(object({
-    label  = string
+    key    = string
     values = list(string)
   }))
-  description = "List of infra node selectors to apply to HyperConverged pods."
+  description = "List of infra node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-infra)"
   default = [{
-    label  = "ibm-cloud.kubernetes.io/server-type"
+    key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["virtual", "physical"]
   }]
 }
 
 variable "workloads_node_selectors" {
   type = list(object({
-    label  = string
+    key    = string
     values = list(string)
   }))
-  description = "List of workload node selectors to apply to HyperConverged pods."
+  description = "List of workload node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-workload)"
   default = [{
-    label  = "ibm-cloud.kubernetes.io/server-type"
+    key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["physical"]
   }]
 }
-
 # tflint-ignore: all
-# variable "ocp_version" {
-#   type        = string
-#   description = "Version of the OCP cluster to provision. OpenShift Virtualization is supported from ocp version 4.17 and above."
-#   default     = "4.17"
-
-#   validation {
-#     condition     = tonumber(var.ocp_version) >= 4.17
-#     error_message = "To install Red Hat OpenShift Virtualization, all worker node should be a bare metal server."
-#   }
-# }
+variable "addons" {
+  type = object({
+    debug-tool = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    image-key-synchronizer = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    openshift-data-foundation = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    vpc-file-csi-driver = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    static-route = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    cluster-autoscaler = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    vpc-block-csi-driver = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    ibm-storage-operator = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+    openshift-ai = optional(object({
+      version         = optional(string)
+      parameters_json = optional(string)
+    }))
+  })
+  description = "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-addons)"
+  nullable    = false
+  # See, https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6290
+  default = {
+    openshift-data-foundation = {
+      parameters_json = "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
+    }
+    vpc-file-csi-driver = {
+      version = "2.0"
+    }
+  }
+}
 
 # # tflint-ignore: all
 # variable "default_worker_pool_machine_type" {

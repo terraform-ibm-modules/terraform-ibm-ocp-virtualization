@@ -457,7 +457,9 @@
                         {
                             "key": "prefix",
                             "required": true,
-                            "virtual": true
+                            "virtual": true,
+                            "type": "string",
+                            "description": "The prefix to be added to all resources created by this solution. To skip using a prefix, set this value to null or an empty string. The prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It should not exceed 16 characters, must not end with a hyphen('-'), and can not contain consecutive hyphens ('--'). Example: prod-0205-openshift. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md)."
                         },
                         {
                             "key": "cluster_id",
@@ -485,6 +487,9 @@
                             "key": "ocp_version",
                             "required": true,
                             "virtual": true,
+                            "type": "string",
+                            "default_value": "4.17",
+                            "description": "Version of the OCP cluster to provision.",
                             "options": [
                                 {
                                     "displayname": "4.17",
@@ -495,6 +500,9 @@
                         {
                             "key": "default_worker_pool_machine_type",
                             "required": true,
+                            "type": "string",
+                            "default_value": "cx2d.metal.96x192",
+                            "description": "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/vpc?topic=vpc-bare-metal-servers-profile&interface=ui#bare-metal-profile-availability-by-region).",
                             "virtual": true,
                             "options": [
                                 {
@@ -525,12 +533,18 @@
                         },
                         {
                             "key": "default_worker_pool_workers_per_zone",
-                            "virtual": true
+                            "virtual": true,
+                            "type": "number",
+                            "default_value": 2,
+                            "description": "Defines the number of worker nodes to provision in each zone for the default worker pool. Overall cluster must have at least 2 worker nodes."
                         },
                         {
                             "key": "default_worker_pool_operating_system",
                             "required": true,
                             "virtual": true,
+                            "type": "string",
+                            "default_value": "RHCOS",
+                            "description": "Provide the operating system for the worker nodes in the default worker pool. OpenShift Virtualization installation is supported only on RHCOS operating system. Refer [here](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_versions) for supported Operating Systems.",
                             "options": [
                                 {
                                     "displayname": "Red Hat CoreOS",
@@ -539,16 +553,7 @@
                             ]
                         },
                         {
-                            "key": "addons",
-                            "virtual": true,
-                            "value": {
-                                "openshift-data-foundation": {
-                                    "parameters_json": "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
-                                },
-                                "vpc-file-csi-driver": {
-                                    "version": "2.0"
-                                }
-                            }
+                            "key": "addons"
                         },
                         {
                             "key": "additional_worker_pools"
@@ -616,7 +621,7 @@
                                 "fully-configurable"
                             ],
                             "id": "1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global",
-                            "optional": false,
+                            "optional": true,
                             "on_by_default": true,
                             "input_mapping": [
                                 {
