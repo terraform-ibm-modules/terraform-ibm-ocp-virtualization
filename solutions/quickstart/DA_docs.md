@@ -1,6 +1,6 @@
 # Configuring complex inputs for OpenShift Virtualization in IBM Cloud projects
 
-Several optional input variables in the Red Hat OpenShift cluster [Deployable Architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You can specify these inputs when you configure your deployable architecture.
+Several optional input variables in the OpenShift Virtualization [Deployable Architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You can specify these inputs when you configure your deployable architecture.
 
 - [Add-ons](#options-with-addons) (`addons`)
 - [Infra node selectors](#options-with-infra) (`infra_node_selectors`)
