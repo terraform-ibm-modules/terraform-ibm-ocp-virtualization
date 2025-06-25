@@ -101,7 +101,7 @@ variable "ocp_version" {
 
   validation {
     condition     = tonumber(var.ocp_version) >= 4.17
-    error_message = "To install Red Hat OpenShift Virtualization, all `ocp_version` should be higher than `4.17`."
+    error_message = "To install Red Hat OpenShift Virtualization, `ocp_version` should be equal to or higher than `4.17`."
   }
 }
 
