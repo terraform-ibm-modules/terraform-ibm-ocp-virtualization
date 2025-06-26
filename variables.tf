@@ -56,7 +56,7 @@ variable "infra_node_selectors" {
     key    = string
     values = list(string)
   }))
-  description = "List of infra node selectors to apply to HyperConverged pods."
+  description = "List of infra node selectors to apply to HyperConverged pods. [Learn more](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)."
   default = [{
     key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["virtual", "physical"]
@@ -68,7 +68,7 @@ variable "workloads_node_selectors" {
     key    = string
     values = list(string)
   }))
-  description = "List of workload node selectors to apply to HyperConverged pods."
+  description = "List of workload node selectors to apply to HyperConverged pods. [Learn more](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)."
   default = [{
     key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["physical"]
