@@ -1,0 +1,335 @@
+{
+    "products": [
+        {
+            "name": "deploy-arch-ibm-ocp-virtualization",
+            "label": "Cloud automation for Red Hat OpenShift Virtualization",
+            "product_kind": "solution",
+            "tags": [
+                "containers",
+                "target_terraform",
+                "target_roks",
+                "terraform",
+                "solution",
+                "ibm_created"
+            ],
+            "keywords": [
+                "openshift",
+                "openshift-virtualization",
+                "ocp-virtualization",
+                "virtualization",
+                "cluster",
+                "IaC",
+                "infrastructure as code",
+                "terraform",
+                "solution"
+            ],
+            "short_description": "Rapidly deploy Red Hat OpenShift clusters on Virtual Private Cloud (VPC) pre-configured with OpenShift Virtualization capabilities for VM workloads.",
+            "long_description": "Red Hat OpenShift Virtualization, provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+            "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/README.md",
+            "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/main/images/rh_ocp.svg",
+            "provider_name": "IBM",
+            "features": [
+                {
+                    "title": "Virtual Private Cloud",
+                    "description": "Creates and configures a Virtual Private Cloud (VPC) network on IBM Cloud for deploying the OpenShift Virtualization cluster in a secure and isolated network environment. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-getting-started&interface=cli#create-and-configure-vpc)."
+                },
+                {
+                    "title": "Red Hat OpenShift Cluster",
+                    "description": "Creates and configures a Red Hat OpenShift cluster on a Virtual Private Cloud (VPC) with bare metal worker nodes to enable the installation of the OpenShift Virtualization for deploying and managing VMs within the OpenShift cluster. [Learn more](https://cloud.ibm.com/docs/openshift?topic=openshift-cluster-create-vpc-gen2&interface=ui)."
+                },
+                {
+                    "title": "Object Storage",
+                    "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) which acts as OpenShift internal registry storage."
+                },
+                {
+                    "title": "OpenShift Virtualization",
+                    "description": "Automates the the deployment of the OpenShift Virtualization Operator, which is responsible for enabling virtualization features within the OpenShift cluster. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)"
+                }
+            ],
+            "support_details": "This product is in the community registry. As such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+            "flavors": [
+                {
+                    "label": "Quickstart",
+                    "name": "quickstart",
+                    "install_type": "fullstack",
+                    "working_directory": "solutions/quickstart",
+                    "iam_permissions": [
+                        {
+                            "service_name": "containers-kubernetes",
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                                "crn:v1:bluemix:public:iam::::role:Editor"
+                            ],
+                            "notes": "Required to create and edit OpenShift cluster and the related resources."
+                        },
+                        {
+                            "service_name": "iam-identity",
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::role:Administrator",
+                                "crn:v1:bluemix:public:iam-identity::::serviceRole:UserApiKeyCreator"
+                            ],
+                            "notes": "Required to create the containers-kubernetes-key needed by the OpenShift cluster on IBM Cloud."
+                        },
+                        {
+                            "service_name": "is.vpc",
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::role:Administrator"
+                            ],
+                            "notes": "Required for creating Virtual Private Cloud(VPC)."
+                        },
+                        {
+                            "service_name": "cloud-object-storage",
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                                "crn:v1:bluemix:public:iam::::role:Editor"
+                            ],
+                            "notes": "Required to create Cloud Object Storage (COS) Instance."
+                        },
+                        {
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::role:Viewer"
+                            ],
+                            "service_name": "Resource group only",
+                            "notes": "Viewer access is required in the resource group you want to provision in."
+                        }
+                    ],
+                    "architecture": {
+                        "features": [
+                            {
+                                "title": " ",
+                                "description": "Configured for getting started with OpenShift Virtualization, offering limited customization options."
+                            }
+                        ],
+                        "diagrams": [
+                            {
+                                "diagram": {
+                                    "caption": "Red Hat OpenShift cluster with OpenShift Virtualization for IBM Cloud",
+                                    "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-ai/main/reference-architecture/deployable-architecture-ocp-virtualization-cluster.svg",
+                                    "type": "image/svg+xml"
+                                },
+                                "description": "This architecture enables the deployment of a <b>Red Hat OpenShift cluster</b> with bare metal worker nodes on IBM Cloud, within a Virtual Private Cloud (VPC) environment.<br><br>The VPC is configured within a specific region and organized under a designated resource group. OpenShift is deployed within the VPC and spread across a zone, hosting multiple Bare Metal Worker Nodes. These nodes offer high-performance, dedicated compute resources ideal for VM workloads.<br><br>To support internal image storage and management, a <b>Cloud Object Storage (COS)</b> instance is integrated. Within this COS instance, a Registry bucket is provisioned to serve as the internal image registry for the OpenShift cluster.<br><br>To support <b>OpenShift Virtualization</b>, the following add-ons are installed: <b>OpenShift Data Foundation (ODF)</b> and the <b>vpc-file-csi-driver</b>.<br><br><b>OpenShift Data Foundation</b> provides integrated, software-defined storage that enables persistent storage for virtual machines (VMs) and applications within OpenShift. It supports block, file, and object storage across hybrid environments, ensuring high availability, scalability, and data resilience for virtualized workloads.<br><br>The <b>vpc-file-csi-driver</b> is a Container Storage Interface (CSI) driver that allows OpenShift clusters to dynamically mount <b>IBM Cloud VPC File Storage</b> volumes. This enables scalable, high-performance file storage integration with OpenShift workloads, including virtual machines.<br><br>These add-ons form a critical part of the virtualization stack, offering persistent and resilient storage infrastructure required for deploying and managing VMs within the OpenShift cluster.<br><br>This architecture provides a robust and quick foundation for deploying and managing your Red Hat OpenShift cluster, enabling seamless Openshift Virtualization."
+                            }
+                        ]
+                    },
+                    "configuration": [
+                        {
+                            "key": "ibmcloud_api_key"
+                        },
+                        {
+                            "key": "prefix",
+                            "required": true
+                        },
+                        {
+                            "key": "existing_resource_group_name",
+                            "required": true,
+                            "display_name": "resource_group",
+                            "custom_config": {
+                                "type": "resource_group",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "identifier": "rg_name"
+                                }
+                            }
+                        },
+                        {
+                            "key": "region",
+                            "required": true,
+                            "custom_config": {
+                                "type": "vpc_region",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "generationType": "2"
+                                }
+                            }
+                        },
+                        {
+                            "key": "zone",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "1",
+                                    "value": 1
+                                },
+                                {
+                                    "displayname": "2",
+                                    "value": 2
+                                },
+                                {
+                                    "displayname": "3",
+                                    "value": 3
+                                }
+                            ]
+                        },
+                        {
+                            "key": "ocp_version",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "4.17",
+                                    "value": "4.17"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "machine_type",
+                            "required": true,
+                            "options": [
+                                {
+                                    "displayname": "bx2.metal.96x384",
+                                    "value": "bx2.metal.96x384"
+                                },
+                                {
+                                    "displayname": "bx2d.metal.96x384",
+                                    "value": "bx2d.metal.96x384"
+                                },
+                                {
+                                    "displayname": "cx2.metal.96x192",
+                                    "value": "cx2.metal.96x192"
+                                },
+                                {
+                                    "displayname": "cx2d.metal.96x192",
+                                    "value": "cx2d.metal.96x192"
+                                },
+                                {
+                                    "displayname": "mx2.metal.96x768",
+                                    "value": "mx2.metal.96x768"
+                                },
+                                {
+                                    "displayname": "mx2d.metal.96x768",
+                                    "value": "mx2d.metal.96x768"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "workers_per_zone"
+                        },
+                        {
+                            "key": "operating_system",
+                            "options": [
+                                {
+                                    "displayname": "Red Hat CoreOS",
+                                    "value": "RHCOS"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "cluster_resource_tags",
+                            "custom_config": {
+                                "type": "array",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "access_tags",
+                            "custom_config": {
+                                "type": "array",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "ocp_entitlement"
+                        },
+                        {
+                            "key": "cluster_ready_when",
+                            "options": [
+                                {
+                                    "displayname": "Normal",
+                                    "value": "Normal"
+                                },
+                                {
+                                    "displayname": "IngressReady",
+                                    "value": "IngressReady"
+                                },
+                                {
+                                    "displayname": "OneWorkerNodeReady",
+                                    "value": "OneWorkerNodeReady"
+                                },
+                                {
+                                    "displayname": "MasterNodeReady",
+                                    "value": "MasterNodeReady"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "addons"
+                        },
+                        {
+                            "key": "address_prefix"
+                        },
+                        {
+                            "key": "cluster_name"
+                        },
+                        {
+                            "key": "vpc_resource_tags"
+                        },
+                        {
+                            "key": "vpc_file_default_storage_class"
+                        },
+                        {
+                            "key": "infra_node_selectors"
+                        },
+                        {
+                            "key": "workloads_node_selectors"
+                        },
+                        {
+                            "key": "cluster_config_endpoint_type",
+                            "options": [
+                                {
+                                    "displayname": "Default",
+                                    "value": "default"
+                                },
+                                {
+                                    "displayname": "Private",
+                                    "value": "private"
+                                },
+                                {
+                                    "displayname": "VPE",
+                                    "value": "vpe"
+                                },
+                                {
+                                    "displayname": "Link",
+                                    "value": "link"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "wait_till",
+                            "options": [
+                                {
+                                    "displayname": "Master Node Ready",
+                                    "value": "MasterNodeReady"
+                                },
+                                {
+                                    "displayname": "One Worker Node Ready",
+                                    "value": "OneWorkerNodeReady"
+                                },
+                                {
+                                    "displayname": "Ingress Ready",
+                                    "value": "IngressReady"
+                                },
+                                {
+                                    "displayname": "Normal",
+                                    "value": "Normal"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "wait_till_timeout"
+                        }
+                    ],
+                    "dependency_version_2": true
+                }
+            ]
+        }
+    ]
+}

@@ -2,59 +2,195 @@
 package test
 
 import (
+	"fmt"
+	"io/fs"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
+	"github.com/stretchr/testify/require"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
+const quickStartTerraformDir = "solutions/quickstart"
 
-// Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
-const basicExampleDir = "examples/basic"
+// Define a struct with fields that match the structure of the YAML data
+const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
-func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  dir,
-		Prefix:        prefix,
-		ResourceGroup: resourceGroup,
+var (
+	sharedInfoSvc      *cloudinfo.CloudInfoService
+	permanentResources map[string]interface{}
+)
+
+type tarIncludePatterns struct {
+	excludeDirs []string
+
+	includeFiletypes []string
+
+	includeDirs []string
+}
+
+func getTarIncludePatternsRecursively(dir string, dirsToExclude []string, fileTypesToInclude []string) ([]string, error) {
+	r := tarIncludePatterns{dirsToExclude, fileTypesToInclude, nil}
+	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
+		return walk(&r, path, entry, err)
 	})
-	return options
-}
-
-// Consistency test for the basic example
-func TestRunBasicExample(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "mod-template-basic", basicExampleDir)
-
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
-
-func TestRunAdvancedExample(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
-
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
-
-// Upgrade test (using advanced example)
-func TestRunUpgradeExample(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "mod-template-adv-upg", advancedExampleDir)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
+	if err != nil {
+		fmt.Println("error")
+		return r.includeDirs, err
 	}
+	return r.includeDirs, nil
+}
+
+func walk(r *tarIncludePatterns, s string, d fs.DirEntry, err error) error {
+	if err != nil {
+		return err
+	}
+	if d.IsDir() {
+		for _, excludeDir := range r.excludeDirs {
+			if strings.Contains(s, excludeDir) {
+				return nil
+			}
+		}
+		if s == ".." {
+			r.includeDirs = append(r.includeDirs, "*.tf")
+			return nil
+		}
+		for _, includeFiletype := range r.includeFiletypes {
+			r.includeDirs = append(r.includeDirs, strings.ReplaceAll(s+"/*"+includeFiletype, "../", ""))
+		}
+	}
+	return nil
+}
+
+// TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
+// for multiple tests
+func TestMain(m *testing.M) {
+	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+
+	var err error
+	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	os.Exit(m.Run())
+}
+
+/*******************************************************************
+* TESTS FOR THE TERRAFORM BASED QUICKSTART DEPLOYABLE ARCHITECTURE *
+********************************************************************/
+func TestRunQuickstartDASchematics(t *testing.T) {
+	t.Parallel()
+
+	excludeDirs := []string{
+		".terraform",
+		".docs",
+		".github",
+		".git",
+		".idea",
+		"common-dev-assets",
+		"examples",
+		"tests",
+		"reference-architectures",
+	}
+	includeFiletypes := []string{
+		".tf",
+		".yaml",
+		".py",
+		".tpl",
+		".md",
+		".sh",
+	}
+
+	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	// if error producing tar patterns (very unexpected) fail test immediately
+	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
+
+	// Set up a schematics test
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing:            t,
+		TarIncludePatterns: tarIncludePatterns,
+		TemplateFolder:     quickStartTerraformDir,
+		// This is the resource group that the workspace will be created in
+		ResourceGroup:          resourceGroup,
+		Prefix:                 "virt-qs",
+		Tags:                   []string{"test-schematic"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 180,
+	})
+
+	// Pass required variables
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		// use options.Prefix here to generate a unique prefix every time so resource group name is unique for every test
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "machine_type", Value: "bx2.4x16", DataType: "string"},
+		{Name: "ocp_entitlement", Value: "cloud_pak", DataType: "string"},
+	}
+
+	err := options.RunSchematicTest()
+	assert.NoError(t, err, "Schematic Test had unexpected error")
+}
+
+func TestRunQuickstartDAUpgrade(t *testing.T) {
+	t.Parallel()
+
+	excludeDirs := []string{
+		".terraform",
+		".docs",
+		".github",
+		".git",
+		".idea",
+		"common-dev-assets",
+		"examples",
+		"tests",
+		"reference-architectures",
+	}
+	includeFiletypes := []string{
+		".tf",
+		".yaml",
+		".py",
+		".tpl",
+		".md",
+		".sh",
+	}
+
+	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	// if error producing tar patterns (very unexpected) fail test immediately
+	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
+
+	// Set up a schematics test
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing:            t,
+		TarIncludePatterns: tarIncludePatterns,
+		TemplateFolder:     quickStartTerraformDir,
+		// This is the resource group that the workspace will be created in
+		ResourceGroup:          resourceGroup,
+		Prefix:                 "virt-qs-upg",
+		Tags:                   []string{"test-schematic"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 180,
+	})
+
+	// Pass required variables
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		// use options.Prefix here to generate a unique prefix every time so resource group name is unique for every test
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "machine_type", Value: "bx2.4x16", DataType: "string"},
+		{Name: "ocp_entitlement", Value: "cloud_pak", DataType: "string"},
+	}
+
+	err := options.RunSchematicUpgradeTest()
+	assert.NoError(t, err, "Schematic Test had unexpected error")
 }
