@@ -96,18 +96,18 @@ variable "cluster_name" {
 
 variable "ocp_version" {
   type        = string
-  description = "Version of the OCP cluster to provision"
+  description = "Version of the OCP cluster to provision."
   default     = "4.17"
 
   validation {
     condition     = tonumber(var.ocp_version) >= 4.17
-    error_message = "To install Red Hat OpenShift Virtualization, all `ocp_version` should be higher than `4.17`."
+    error_message = "To install Red Hat OpenShift Virtualization, `ocp_version` should be equal to or higher than `4.17`."
   }
 }
 
 variable "ocp_entitlement" {
   type        = string
-  description = "Value that is applied to the entitlements for OCP cluster provisioning"
+  description = "Value that is applied to the entitlements for OCP cluster provisioning."
   default     = null
 }
 
@@ -130,13 +130,13 @@ variable "workers_per_zone" {
 
 variable "machine_type" {
   type        = string
-  description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/vpc?topic=vpc-bare-metal-servers-profile&interface=ui#bare-metal-profile-availability-by-region)"
+  description = "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/vpc?topic=vpc-bare-metal-servers-profile&interface=ui#bare-metal-profile-availability-by-region)."
   default     = "cx2d.metal.96x192"
 }
 
 variable "operating_system" {
   type        = string
-  description = "Provide the operating system for the worker nodes in the default worker pool. OpenShift Virtualization installation is supported only on RHCOS operating system. Refer [here](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_versions) for supported Operating Systems"
+  description = "Provide the operating system for the worker nodes in the default worker pool. OpenShift Virtualization installation is supported only on RHCOS operating system. Refer [here](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_versions) for supported Operating Systems."
   default     = "RHCOS"
 
   validation {
@@ -209,7 +209,7 @@ variable "cluster_config_endpoint_type" {
 }
 
 variable "wait_till" {
-  description = "To avoid long wait times when you run your Terraform code, you can specify the stage when you want Terraform to mark the cluster resource creation as completed. Depending on what stage you choose, the cluster creation might not be fully completed and continues to run in the background. However, your Terraform code can continue to run without waiting for the cluster to be fully created. Supported args are `MasterNodeReady`, `OneWorkerNodeReady`, `IngressReady` and `Normal`"
+  description = "To avoid long wait times when you run your Terraform code, you can specify the stage when you want Terraform to mark the cluster resource creation as completed. Depending on what stage you choose, the cluster creation might not be fully completed and continues to run in the background. However, your Terraform code can continue to run without waiting for the cluster to be fully created. Supported args are `MasterNodeReady`, `OneWorkerNodeReady`, `IngressReady` and `Normal`."
   type        = string
   default     = "Normal"
 }
@@ -231,7 +231,7 @@ variable "infra_node_selectors" {
     key    = string
     values = list(string)
   }))
-  description = "List of infra node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-infra)"
+  description = "List of infra node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-infra)."
   default = [{
     key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["virtual", "physical"]
@@ -243,7 +243,7 @@ variable "workloads_node_selectors" {
     key    = string
     values = list(string)
   }))
-  description = "List of workload node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-workload)"
+  description = "List of workload node selectors to apply to HyperConverged pods. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/quickstart/DA_docs.md#options-with-workload)."
   default = [{
     key    = "ibm-cloud.kubernetes.io/server-type"
     values = ["physical"]

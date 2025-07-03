@@ -10,8 +10,7 @@
                 "target_roks",
                 "terraform",
                 "solution",
-                "ibm_created",
-                "ibm_beta"
+                "ibm_created"
             ],
             "keywords": [
                 "openshift",
@@ -25,22 +24,33 @@
                 "solution"
             ],
             "short_description": "Rapidly deploy Red Hat OpenShift clusters on Virtual Private Cloud (VPC) pre-configured with OpenShift Virtualization capabilities for VM workloads.",
-            "long_description": "Red Hat® OpenShift® Virtualization, provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+            "long_description": "Red Hat OpenShift Virtualization, provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
             "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/README.md",
             "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/main/images/rh_ocp.svg",
             "provider_name": "IBM",
             "features": [
                 {
+                    "title": "Virtual Private Cloud",
+                    "description": "Creates and configures a Virtual Private Cloud (VPC) network on IBM Cloud for deploying the OpenShift Virtualization cluster in a secure and isolated network environment. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-getting-started&interface=cli#create-and-configure-vpc)."
+                },
+                {
+                    "title": "Red Hat OpenShift Cluster",
+                    "description": "Creates and configures a Red Hat OpenShift cluster on a Virtual Private Cloud (VPC) with bare metal worker nodes to enable the installation of the OpenShift Virtualization for deploying and managing VMs within the OpenShift cluster. [Learn more](https://cloud.ibm.com/docs/openshift?topic=openshift-cluster-create-vpc-gen2&interface=ui)."
+                },
+                {
+                    "title": "Object Storage",
+                    "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) which acts as OpenShift internal registry storage."
+                },
+                {
                     "title": "OpenShift Virtualization",
-                    "description": "Automates the provisioning of a fully configured Red Hat OpenShift Cluster on VPC with OpenShift Virtualization capabilities on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)"
+                    "description": "Automates the the deployment of the OpenShift Virtualization Operator, which is responsible for enabling virtualization features within the OpenShift cluster. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)"
                 }
             ],
-            "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+            "support_details": "This product is in the community registry. As such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
             "flavors": [
                 {
-                    "label": "QuickStart",
+                    "label": "Quickstart",
                     "name": "quickstart",
-                    "index": 1,
                     "install_type": "fullstack",
                     "working_directory": "solutions/quickstart",
                     "iam_permissions": [
@@ -93,18 +103,17 @@
                         "diagrams": [
                             {
                                 "diagram": {
-                                    "caption": "Red Hat OpenShift cluster with OpenShift Virtualization for IBM Cloud.",
-                                    "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-ai/main/reference-architecture/deployable-architecture-ocp-virtualization-quickstart.svg",
+                                    "caption": "Red Hat OpenShift cluster with OpenShift Virtualization for IBM Cloud",
+                                    "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/main/reference-architecture/deployable-architecture-ocp-virtualization-cluster.svg",
                                     "type": "image/svg+xml"
                                 },
-                                "description": "This architecture enables the deployment of a <b>Red Hat OpenShift cluster</b> with Bare Metal Worker Nodes on IBM Cloud, within a Virtual Private Cloud (VPC) environment.<br><br>The VPC is configured within a specific Region and organized under a designated Resource Group. OpenShift is deployed within the VPC and spread across a Zone, hosting multiple Bare Metal Worker Nodes. These nodes offer high-performance, dedicated compute resources ideal for VM workloads.<br><br>To support internal image storage and management, a <b>Cloud Object Storage (COS)</b> instance is integrated. Within this COS instance, a Registry Bucket is provisioned to serve as the internal image registry for the OpenShift cluster.<br><br>To support <b>OpenShift Virtualization</b>, the following add-ons are installed: <b>OpenShift Data Foundation (ODF)</b> and the <b>vpc-file-csi-driver</b>.<br><br><b>OpenShift Data Foundation</b> provides integrated, software-defined storage that enables persistent storage for virtual machines (VMs) and applications within OpenShift. It supports block, file, and object storage across hybrid environments, ensuring high availability, scalability, and data resilience for virtualized workloads.<br><br>The <b>vpc-file-csi-driver</b> is a Container Storage Interface (CSI) driver that allows OpenShift clusters to dynamically mount <b>IBM Cloud VPC File Storage</b> volumes. This enables scalable, high-performance file storage integration with OpenShift workloads, including virtual machines.<br><br>These add-ons form a critical part of the virtualization stack, offering persistent and resilient storage infrastructure required for deploying and managing VMs within the OpenShift cluster.<br><br>This architecture provides a robust and quick foundation for deploying and managing your Red Hat OpenShift cluster, enabling seamless Openshift Virtualization."
+                                "description": "This architecture enables the deployment of a <b>Red Hat OpenShift cluster</b> with bare metal worker nodes on IBM Cloud, within a Virtual Private Cloud (VPC) environment.<br><br>The VPC is configured within a specific region and organized under a designated resource group. OpenShift is deployed within the VPC and spread across a zone, hosting multiple Bare Metal Worker Nodes. These nodes offer high-performance, dedicated compute resources ideal for VM workloads.<br><br>To support internal image storage and management, a <b>Cloud Object Storage (COS)</b> instance is integrated. Within this COS instance, a Registry bucket is provisioned to serve as the internal image registry for the OpenShift cluster.<br><br>To support <b>OpenShift Virtualization</b>, the following add-ons are installed: <b>OpenShift Data Foundation (ODF)</b> and the <b>vpc-file-csi-driver</b>.<br><br><b>OpenShift Data Foundation</b> provides integrated, software-defined storage that enables persistent storage for virtual machines (VMs) and applications within OpenShift. It supports block, file, and object storage across hybrid environments, ensuring high availability, scalability, and data resilience for virtualized workloads.<br><br>The <b>vpc-file-csi-driver</b> is a Container Storage Interface (CSI) driver that allows OpenShift clusters to dynamically mount <b>IBM Cloud VPC File Storage</b> volumes. This enables scalable, high-performance file storage integration with OpenShift workloads, including virtual machines.<br><br>These add-ons form a critical part of the virtualization stack, offering persistent and resilient storage infrastructure required for deploying and managing VMs within the OpenShift cluster.<br><br>This architecture provides a robust and quick foundation for deploying and managing your Red Hat OpenShift cluster, enabling seamless Openshift Virtualization."
                             }
                         ]
                     },
                     "configuration": [
                         {
-                            "key": "ibmcloud_api_key",
-                            "required": true
+                            "key": "ibmcloud_api_key"
                         },
                         {
                             "key": "prefix",
@@ -198,7 +207,6 @@
                         },
                         {
                             "key": "operating_system",
-                            "required": true,
                             "options": [
                                 {
                                     "displayname": "Red Hat CoreOS",

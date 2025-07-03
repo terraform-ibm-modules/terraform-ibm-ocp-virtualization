@@ -18,7 +18,7 @@ output "cluster_crn" {
 }
 
 output "workerpools" {
-  description = "A list of worker pools associated with the provisioned cluster"
+  description = "A list of worker pools associated with the provisioned cluster."
   value       = module.ocp_base.workerpools
 }
 
