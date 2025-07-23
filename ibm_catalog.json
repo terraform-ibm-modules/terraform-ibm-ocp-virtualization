@@ -574,10 +574,27 @@
                             ]
                         },
                         {
-                            "key": "addons"
+                            "key": "addons",
+                            "type": "object",
+                            "default_value": "{\n    openshift-data-foundation = {\n      parameters_json = \"{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}\"\n    }\n    vpc-file-csi-driver = {\n      version = \"2.0\"\n    }\n}",
+                            "description": "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). [Check supported addons and versions here](https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions). [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/blob/main/solutions/fully-configurable/DA_docs.md#options-with-addons)",
+                            "display_name": "addons",
+                            "required": false,
+                            "virtual": true
                         },
                         {
-                            "key": "additional_worker_pools"
+                            "key": "additional_worker_pools",
+                            "type": "array",
+                            "default_value": "[]",
+                            "description": "List of additional worker pools. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/blob/main/solutions/fully-configurable/DA_docs.md#options-with-worker-pools)",
+                            "display_name": "additional_worker_pools",
+                            "required": false,
+                            "custom_config": {
+                                "type": "textarea",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment"
+                            },
+                            "virtual": true
                         },
                         {
                             "key": "vpc_file_default_storage_class"
@@ -646,16 +663,6 @@
                             "on_by_default": true,
                             "input_mapping": [
                                 {
-                                    "dependency_input": "addons",
-                                    "version_input": "addons",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "prefix",
-                                    "version_input": "prefix",
-                                    "reference_version": true
-                                },
-                                {
                                     "dependency_output": "cluster_id",
                                     "version_input": "cluster_id"
                                 },
@@ -684,12 +691,32 @@
                                     "reference_version": true
                                 },
                                 {
+                                    "dependency_input": "prefix",
+                                    "version_input": "prefix",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "cluster_name",
+                                    "version_input": "cluster_name",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "ocp_version",
+                                    "version_input": "ocp_version",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "addons",
+                                    "version_input": "addons",
+                                    "reference_version": true
+                                },
+                                {
                                     "dependency_input": "additional_worker_pools",
                                     "version_input": "additional_worker_pools",
                                     "reference_version": true
                                 }
                             ],
-                            "version": "^v3.43.1"
+                            "version": "v3.52.4"
                         }
                     ],
                     "dependency_version_2": true
