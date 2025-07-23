@@ -622,10 +622,20 @@
                             "key": "vpc_file_default_storage_class"
                         },
                         {
-                            "key": "infra_node_selectors"
+                            "key": "infra_node_selectors",
+                            "custom_config": {
+                                "type": "textarea",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment"
+                            }
                         },
                         {
-                            "key": "workloads_node_selectors"
+                            "key": "workloads_node_selectors",
+                            "custom_config": {
+                                "type": "textarea",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment"
+                            }
                         },
                         {
                             "key": "cluster_config_endpoint_type",
@@ -741,6 +751,14 @@
                                     "dependency_input": "subnets",
                                     "version_input": "subnets",
                                     "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "disable_public_endpoint",
+                                    "value": false
+                                },
+                                {
+                                    "dependency_input": "disable_outbound_traffic_protection",
+                                    "value": true
                                 }
                             ],
                             "version": "v3.52.4"
