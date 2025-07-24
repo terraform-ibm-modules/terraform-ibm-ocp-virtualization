@@ -753,10 +753,6 @@
                                     "reference_version": true
                                 },
                                 {
-                                    "dependency_input": "disable_public_endpoint",
-                                    "value": false
-                                },
-                                {
                                     "dependency_input": "disable_outbound_traffic_protection",
                                     "value": true
                                 }
