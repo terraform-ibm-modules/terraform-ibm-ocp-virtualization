@@ -247,7 +247,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 	// Provision existing resources first
 	prefix := fmt.Sprintf("ocp-existing-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
+	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing:               t,
