@@ -5,12 +5,13 @@
             "label": "Cloud automation for Red Hat OpenShift Virtualization",
             "product_kind": "solution",
             "tags": [
-                "containers",
+                "ibm_created",
                 "target_terraform",
-                "target_roks",
                 "terraform",
                 "solution",
-                "ibm_created"
+                "containers",
+                "target_roks",
+                "converged_infra"
             ],
             "keywords": [
                 "openshift",
