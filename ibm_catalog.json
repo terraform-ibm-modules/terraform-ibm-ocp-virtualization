@@ -327,7 +327,8 @@
                             "key": "wait_till_timeout"
                         }
                     ],
-                    "dependency_version_2": true
+                    "dependency_version_2": true,
+                    "terraform_version": "1.10.5"
                 },
                 {
                     "label": "Fully configurable",
