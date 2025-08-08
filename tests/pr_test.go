@@ -271,7 +271,6 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 // TestDependencyPermutations runs dependency permutations for the Virtualization and all its dependencies
 func TestDependencyPermutations(t *testing.T) {
-	t.Parallel()
 
 	// Provision resources first
 	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueId()))
