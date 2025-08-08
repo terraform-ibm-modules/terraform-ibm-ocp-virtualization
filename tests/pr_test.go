@@ -18,6 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -266,4 +267,28 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 	require.NoError(t, options.RunSchematicUpgradeTest(), "This should not have errored")
 	cleanupTerraform(t, existingTerraformOptions, prefix)
+}
+
+// TestDependencyPermutations runs dependency permutations for the Virtualization and all its dependencies
+func TestDependencyPermutations(t *testing.T) {
+	// Provision resources first
+	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueId()))
+	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
+
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing: t,
+		Prefix:  "virt",
+		AddonConfig: cloudinfo.AddonConfig{
+			OfferingName:   "deploy-arch-ibm-ocp-virtualization",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"prefix":                    prefix,
+				"cluster_id":                terraform.Output(t, existingTerraformOptions, "workload_cluster_id"),
+				"cluster_resource_group_id": terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"),
+			},
+		},
+	})
+
+	err := options.RunAddonPermutationTest()
+	assert.NoError(t, err, "Dependency permutation test should not fail")
 }
