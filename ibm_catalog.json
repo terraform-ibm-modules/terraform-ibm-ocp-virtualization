@@ -52,6 +52,7 @@
                 {
                     "label": "Quickstart",
                     "name": "quickstart",
+                    "index": 1,
                     "install_type": "fullstack",
                     "working_directory": "solutions/quickstart",
                     "iam_permissions": [
@@ -170,6 +171,10 @@
                                 {
                                     "displayname": "4.17",
                                     "value": "4.17"
+                                },
+                                {
+                                    "displayname": "4.18",
+                                    "value": "4.18"
                                 }
                             ]
                         },
@@ -457,20 +462,20 @@
                             "required": true
                         },
                         {
-                            "key": "cluster_name",
-                            "type": "string",
-                            "default_value": "openshift",
-                            "description": "The name of the new IBM Cloud OpenShift Cluster. If a `prefix` input variable is specified, it is added to this name in the `<prefix>-value` format.",
-                            "display_name": "cluster_name",
-                            "required": true,
-                            "virtual": true
-                        },
-                        {
                             "key": "prefix",
                             "type": "string",
                             "default_value": "__NOT_SET__",
                             "description": "The prefix to be added to all resources created by this solution. To skip using a prefix, set this value to null or an empty string. The prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It should not exceed 16 characters, must not end with a hyphen('-'), and can not contain consecutive hyphens ('--'). Example: prod-0405-ocp. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
                             "display_name": "prefix",
+                            "required": true,
+                            "virtual": true
+                        },
+                        {
+                            "key": "cluster_name",
+                            "type": "string",
+                            "default_value": "openshift",
+                            "description": "The name of the new IBM Cloud OpenShift Cluster. If a `prefix` input variable is specified, it is added to this name in the `<prefix>-value` format.",
+                            "display_name": "cluster_name",
                             "required": true,
                             "virtual": true
                         },
@@ -526,12 +531,16 @@
                             "required": true,
                             "virtual": true,
                             "type": "string",
-                            "default_value": "4.17",
+                            "default_value": "4.18",
                             "description": "Version of the OCP cluster to provision.",
                             "options": [
                                 {
                                     "displayname": "4.17",
                                     "value": "4.17"
+                                },
+                                {
+                                    "displayname": "4.18",
+                                    "value": "4.18"
                                 }
                             ]
                         },
@@ -759,7 +768,7 @@
                                     "value": true
                                 }
                             ],
-                            "version": "v3.53.3"
+                            "version": "v3.55.2"
                         }
                     ],
                     "dependency_version_2": true,
