@@ -97,7 +97,7 @@ variable "cluster_name" {
 variable "ocp_version" {
   type        = string
   description = "Version of the OCP cluster to provision."
-  default     = "4.17"
+  default     = "4.18"
 
   validation {
     condition     = tonumber(var.ocp_version) >= 4.17
