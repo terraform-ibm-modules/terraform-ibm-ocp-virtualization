@@ -532,7 +532,7 @@
                             "virtual": true,
                             "type": "string",
                             "default_value": "4.18",
-                            "description": "Version of the OCP cluster to provision.",
+                            "description": "Version of the OpenShift cluster to provision.",
                             "options": [
                                 {
                                     "displayname": "4.17",
@@ -610,7 +610,7 @@
                                     "version": "2.0"
                                 }
                             },
-                            "description": "Map of OCP cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/fully-configurable/DA_docs.md#options-with-addons)",
+                            "description": "Map of OpenShift cluster add-on versions to install (NOTE: The 'vpc-block-csi-driver' add-on is installed by default for VPC clusters and 'ibm-storage-operator' is installed by default in OCP 4.15 and later, however you can explicitly specify it here if you wish to choose a later version than the default one). For full list of all supported add-ons and versions, see https://cloud.ibm.com/docs/containers?topic=containers-supported-cluster-addon-versions. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/solutions/fully-configurable/DA_docs.md#options-with-addons)",
                             "display_name": "addons",
                             "required": false,
                             "virtual": true
