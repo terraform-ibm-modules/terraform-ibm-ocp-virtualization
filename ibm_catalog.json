@@ -25,7 +25,7 @@
         "solution"
       ],
       "short_description": "Deploy Red Hat OpenShift clusters on Virtual Private Cloud (VPC) pre-configured with OpenShift Virtualization capabilities for VM workloads",
-      "long_description": "[Red Hat OpenShift Virtualization](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization), provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+      "long_description": "The [Red Hat OpenShift Virtualization](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization), provides a modern platform for organizations to run and deploy their new and existing virtual machine (VM) workloads. This automation streamlines the deployment of Red Hat OpenShift cluster with OpenShift Virtualization on IBM Cloud. The OpenShift Virtualization Operator adds Kubernetes custom resources to enable virtualization.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/main/images/rh_ocp.svg",
       "provider_name": "IBM",
@@ -40,11 +40,11 @@
         },
         {
           "title": "Object Storage",
-          "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) which acts as OpenShift internal registry storage."
+          "description": "Creates and configures an Object Storage bucket which acts as OpenShift internal registry storage. [Learn More](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand)."
         },
         {
           "title": "OpenShift Virtualization",
-          "description": "Automates the the deployment of the OpenShift Virtualization Operator, which is responsible for enabling virtualization features within the OpenShift cluster. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)"
+          "description": "Automates the the deployment of the OpenShift Virtualization Operator, which is responsible for enabling virtualization features within the OpenShift cluster. [Learn more](https://www.ibm.com/docs/en/fusion-software/2.8.x?topic=red-hat-openshift-virtualization)."
         }
       ],
       "support_details": "This product is in the community registry. As such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -57,34 +57,34 @@
           "working_directory": "solutions/quickstart",
           "iam_permissions": [
             {
-              "service_name": "containers-kubernetes",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
+              "service_name": "containers-kubernetes",
               "notes": "Required to create and edit OpenShift cluster and the related resources."
             },
             {
-              "service_name": "iam-identity",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator",
                 "crn:v1:bluemix:public:iam-identity::::serviceRole:UserApiKeyCreator"
               ],
+              "service_name": "iam-identity",
               "notes": "Required to create the containers-kubernetes-key needed by the OpenShift cluster on IBM Cloud."
             },
             {
-              "service_name": "is.vpc",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
+              "service_name": "is.vpc",
               "notes": "Required for creating Virtual Private Cloud(VPC)."
             },
             {
-              "service_name": "cloud-object-storage",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
+              "service_name": "cloud-object-storage",
               "notes": "Required to create Cloud Object Storage (COS) Instance."
             },
             {
@@ -353,11 +353,11 @@
           },
           "iam_permissions": [
             {
-              "service_name": "iam-identity",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator",
                 "crn:v1:bluemix:public:iam-identity::::serviceRole:UserApiKeyCreator"
               ],
+              "service_name": "iam-identity",
               "notes": "Required to create the containers-kubernetes-key needed by the OpenShift cluster on IBM Cloud."
             },
             {
@@ -385,18 +385,18 @@
               "notes": "[Optional] Required if Cloud Object Storage is selected to store data from the OpenShift AI add-on, Cloud logs, or Activity Tracker events."
             },
             {
-              "service_name": "containers-kubernetes",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
+              "service_name": "containers-kubernetes",
               "notes": "Required to create and edit the OpenShift cluster and the related resources."
             },
             {
-              "service_name": "is.vpc",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
+              "service_name": "is.vpc",
               "notes": "[Optional] Required for creating Virtual Private Cloud(VPC)."
             },
             {
@@ -423,18 +423,18 @@
               "notes": "[Optional] Required for consuming Observability DA, which sets up Cloud logs."
             },
             {
-              "service_name": "logs-router",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager"
               ],
+              "service_name": "logs-router",
               "notes": "[Optional] Required for consuming Observability deployable architecture, which sets up Logs Routing."
             },
             {
-              "service_name": "atracker",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Writer",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
+              "service_name": "atracker",
               "notes": "[Optional] Required for consuming Observability deployable architecture, which sets up Activity Tracker Event Routing."
             }
           ],
@@ -442,7 +442,7 @@
             "features": [
               {
                 "title": " ",
-                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+                "description": "Configured to use IBM secure-by-default standards, but can be edited to fit your use case."
               }
             ],
             "diagrams": [
