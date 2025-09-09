@@ -81,11 +81,13 @@ resource "helm_release" "subscription" {
   recreate_pods    = true
   force_update     = true
 
-  set {
-    name  = "subscription.version"
-    type  = "string"
-    value = local.subscription_version
-  }
+  set = [
+    {
+      name  = "subscription.version"
+      type  = "string"
+      value = local.subscription_version
+    }
+  ]
 }
 
 #########################################################################################################################
