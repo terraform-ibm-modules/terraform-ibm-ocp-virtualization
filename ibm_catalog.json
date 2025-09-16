@@ -415,13 +415,6 @@
             },
             {
               "role_crns": [
-                "crn:v1:bluemix:public:iam::::serviceRole:Manager"
-              ],
-              "service_name": "logs-router",
-              "notes": "[Optional] Required for consuming Observability deployable architecture, which sets up Logs Routing."
-            },
-            {
-              "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Writer",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
