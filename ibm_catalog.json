@@ -614,7 +614,7 @@
               "display_name": "additional_worker_pools",
               "required": false,
               "custom_config": {
-                "type": "code_editor",
+                "type": "textarea",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               },
