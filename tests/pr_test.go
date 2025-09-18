@@ -125,7 +125,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "machine_type", Value: "bx2.4x16", DataType: "string"},
-		{Name: "ocp_entitlement", Value: "cloud_pak", DataType: "string"},
+		{Name: "openshift_entitlement", Value: "cloud_pak", DataType: "string"},
 	}
 
 	err := options.RunSchematicTest()
@@ -159,7 +159,7 @@ func TestRunQuickstartDAUpgrade(t *testing.T) {
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "machine_type", Value: "bx2.4x16", DataType: "string"},
-		{Name: "ocp_entitlement", Value: "cloud_pak", DataType: "string"},
+		{Name: "openshift_entitlement", Value: "cloud_pak", DataType: "string"},
 	}
 
 	err := options.RunSchematicUpgradeTest()
