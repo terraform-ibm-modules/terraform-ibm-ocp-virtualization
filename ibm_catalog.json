@@ -626,7 +626,7 @@
             {
               "key": "infra_node_selectors",
               "custom_config": {
-                "type": "textarea",
+                "type": "code_editor",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               }
@@ -634,7 +634,7 @@
             {
               "key": "workloads_node_selectors",
               "custom_config": {
-                "type": "textarea",
+                "type": "code_editor",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               }
