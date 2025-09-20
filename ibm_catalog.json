@@ -639,24 +639,6 @@
               "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network."
             },
             {
-              "key": "allow_outbound_traffic",
-              "type": "boolean",
-              "required": true,
-              "virtual": true,
-              "default_value": false,
-              "options": [
-                {
-                  "displayname": "true",
-                  "value": "true"
-                },
-                {
-                  "displayname": "false",
-                  "value": "false"
-                }
-              ],
-              "description": "Set to true to allow public outbound access from the cluster workers."
-            },
-            {
               "key": "secrets_manager_service_plan",
               "type": "string",
               "required": true,
@@ -815,8 +797,7 @@
                 },
                 {
                   "dependency_input": "allow_outbound_traffic",
-                  "version_input": "allow_outbound_traffic",
-                  "reference_version": true
+                  "value": "true"
                 },
                 {
                   "dependency_input": "secrets_manager_service_plan",
