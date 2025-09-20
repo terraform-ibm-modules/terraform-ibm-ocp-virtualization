@@ -94,14 +94,14 @@ variable "cluster_name" {
   default     = "openshift"
 }
 
-variable "ocp_version" {
+variable "openshift_version" {
   type        = string
   description = "Version of the OCP cluster to provision."
   default     = "4.18"
 
   validation {
-    condition     = tonumber(var.ocp_version) >= 4.17
-    error_message = "To install Red Hat OpenShift Virtualization, `ocp_version` should be equal to or higher than `4.17`."
+    condition     = tonumber(var.openshift_version) >= 4.17
+    error_message = "To install Red Hat OpenShift Virtualization, `openshift_version` should be equal to or higher than `4.17`."
   }
 }
 

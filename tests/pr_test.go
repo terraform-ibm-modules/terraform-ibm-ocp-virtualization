@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IBM/go-sdk-core/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -269,27 +270,42 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	cleanupTerraform(t, existingTerraformOptions, prefix)
 }
 
-// TestDependencyPermutations runs dependency permutations for the Virtualization and all its dependencies
-func TestDependencyPermutations(t *testing.T) {
-
-	// Provision resources first
-	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
+func TestAddonConfigurations(t *testing.T) {
+	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "virt",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-ocp-virtualization",
-			OfferingFlavor: "fully-configurable",
-			Inputs: map[string]interface{}{
-				"prefix":                    prefix,
-				"cluster_id":                terraform.Output(t, existingTerraformOptions, "workload_cluster_id"),
-				"cluster_resource_group_id": terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"),
-			},
-		},
+		Testing:   t,
+		Prefix:    "virt-def",
+		QuietMode: false,
 	})
 
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-ocp-virtualization",
+		"fully-configurable",
+		map[string]interface{}{
+			"region":                       "eu-de",
+			"prefix":                       options.Prefix,
+			"secrets_manager_service_plan": "trial",
+		},
+	)
+
+	/*
+		Event notifications is manually disabled in this test because event notifications DA creates kms keys and during undeploy the order of key protect and event notifications
+		is not considered by projects as EN is not a direct dependency of VSI DA. So undeploy fails, because
+		key protect instance can't be deleted because of active keys created by EN. Hence for now, we don't want to deploy
+		EN.
+
+		Issue has been created for projects team. https://github.ibm.com/epx/projects/issues/4750
+		Once that is fixed, we can remove the logic to disable EN
+	*/
+	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		{
+			OfferingName:   "deploy-arch-ibm-event-notifications",
+			OfferingFlavor: "fully-configurable",
+			Enabled:        core.BoolPtr(false), // explicitly disabled
+		},
+	}
+	err := options.RunAddonTest()
+	require.NoError(t, err)
 }
