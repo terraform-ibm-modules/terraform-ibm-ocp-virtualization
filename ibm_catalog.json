@@ -625,7 +625,7 @@
               "type": "boolean",
               "required": true,
               "virtual": true,
-              "default_value": false,
+              "default_value": true,
               "options": [
                 {
                   "displayname": "true",
