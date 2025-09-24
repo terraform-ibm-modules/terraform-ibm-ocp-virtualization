@@ -86,13 +86,13 @@ locals {
 
   addons = merge({ for key, value in var.addons :
     key => value != null ? {
-      version         = lookup(value, "version", null) == null && key == "openshift-data-foundation" ? "${var.ocp_version}.0" : lookup(value, "version", null)
+      version         = lookup(value, "version", null) == null && key == "openshift-data-foundation" ? "${var.openshift_version}.0" : lookup(value, "version", null)
       parameters_json = lookup(value, "parameters_json", null)
     } : null
     },
     # if the user overrides the values for the addons
     lookup(var.addons, "openshift-data-foundation", null) == null ? { openshift-data-foundation = {
-      version         = "${var.ocp_version}.0"
+      version         = "${var.openshift_version}.0"
       parameters_json = "{\"osdStorageClassName\":\"localblock\",\"odfDeploy\":\"true\",\"autoDiscoverDevices\":\"true\"}"
     } } : {},
     lookup(var.addons, "vpc-file-csi-driver", null) == null ? { vpc-file-csi-driver = {
@@ -110,7 +110,7 @@ module "ocp_base" {
   force_delete_storage                = true
   vpc_id                              = module.vpc.vpc_id
   vpc_subnets                         = module.vpc.subnet_detail_map
-  ocp_version                         = var.ocp_version
+  ocp_version                         = var.openshift_version
   worker_pools                        = local.worker_pools
   access_tags                         = var.access_tags
   ocp_entitlement                     = var.ocp_entitlement

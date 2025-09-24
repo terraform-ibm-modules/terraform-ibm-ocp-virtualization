@@ -165,7 +165,7 @@
               ]
             },
             {
-              "key": "ocp_version",
+              "key": "openshift_version",
               "required": true,
               "options": [
                 {
@@ -518,7 +518,7 @@
               }
             },
             {
-              "key": "ocp_version",
+              "key": "openshift_version",
               "required": true,
               "virtual": true,
               "type": "string",
@@ -621,6 +621,42 @@
               "virtual": true
             },
             {
+              "key": "allow_public_access_to_cluster",
+              "type": "boolean",
+              "required": true,
+              "virtual": true,
+              "default_value": true,
+              "options": [
+                {
+                  "displayname": "true",
+                  "value": "true"
+                },
+                {
+                  "displayname": "false",
+                  "value": "false"
+                }
+              ],
+              "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network."
+            },
+            {
+              "key": "secrets_manager_service_plan",
+              "type": "string",
+              "required": true,
+              "virtual": true,
+              "default_value": "standard",
+              "options": [
+                {
+                  "displayname": "Standard",
+                  "value": "standard"
+                },
+                {
+                  "displayname": "Trial",
+                  "value": "trial"
+                }
+              ],
+              "description": "The pricing plan to use when provisioning a Secrets Manager instance for centrally managing ingress certificates for OpenShift cluster. Possible values: `standard`, `trial`. You can create only one Trial instance of Secrets Manager per account. Before you can create a new Trial instance, you must delete the existing Trial instance and its reclamation. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-create-instance&interface=ui#upgrade-instance-standard)."
+            },
+            {
               "key": "vpc_file_default_storage_class"
             },
             {
@@ -687,12 +723,12 @@
           ],
           "dependencies": [
             {
-              "name": "deploy-arch-ibm-ocp-vpc",
-              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "name": "deploy-arch-ibm-slz-ocp",
+              "catalog_id": "1082e7d2-5e2f-0a11-a3bc-f88a8e1931fc",
               "flavors": [
                 "fully-configurable"
               ],
-              "id": "1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global",
+              "id": "95fccffc-ae3b-42df-b6d9-80be5914d852-global",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -725,8 +761,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "ocp_version",
-                  "version_input": "ocp_version",
+                  "dependency_input": "openshift_version",
+                  "version_input": "openshift_version",
                   "reference_version": true
                 },
                 {
@@ -755,11 +791,21 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "disable_outbound_traffic_protection",
-                  "value": true
+                  "dependency_input": "allow_public_access_to_cluster",
+                  "version_input": "allow_public_access_to_cluster",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "allow_outbound_traffic",
+                  "value": "true"
+                },
+                {
+                  "dependency_input": "secrets_manager_service_plan",
+                  "version_input": "secrets_manager_service_plan",
+                  "reference_version": true
                 }
               ],
-              "version": "v3.55.2"
+              "version": "v3.58.2"
             }
           ],
           "dependency_version_2": true,
