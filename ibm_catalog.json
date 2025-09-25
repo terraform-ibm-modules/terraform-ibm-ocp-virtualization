@@ -893,7 +893,11 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "disable_outbound_traffic_protection",
+                  "dependency_input": "allow_outbound_traffic",
+                  "value": true
+                },
+                {
+                  "dependency_input": "allow_public_access_to_cluster",
                   "value": true
                 },
                 {
