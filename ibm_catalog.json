@@ -123,7 +123,6 @@
             },
             {
               "key": "existing_resource_group_name",
-              "required": true,
               "display_name": "resource_group",
               "custom_config": {
                 "type": "resource_group",
