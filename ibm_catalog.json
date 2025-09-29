@@ -445,7 +445,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required for consuming Observability deployable architecture, which sets up Cloud Monitoring."
+              "notes": "[Optional] Required to create an instance of Cloud Monitoring."
             },
             {
               "role_crns": [
@@ -453,7 +453,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required for consuming Observability DA, which sets up Cloud logs."
+              "notes": "[Optional] Required to create an instance of Cloud Logs."
             },
             {
               "role_crns": [
@@ -461,7 +461,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "atracker",
-              "notes": "[Optional] Required for consuming Observability deployable architecture, which sets up Activity Tracker Event Routing."
+              "notes": "[Optional] Required when enabling the Activity Tracker Event Routing."
             },
             {
               "service_name": "logs-router",
