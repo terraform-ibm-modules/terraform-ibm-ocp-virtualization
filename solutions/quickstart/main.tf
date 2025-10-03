@@ -113,7 +113,7 @@ module "ocp_base" {
   ocp_version                         = var.openshift_version
   worker_pools                        = local.worker_pools
   access_tags                         = var.access_tags
-  ocp_entitlement                     = var.ocp_entitlement
+  ocp_entitlement                     = var.openshift_entitlement
   addons                              = local.addons
   cluster_ready_when                  = var.cluster_ready_when
   disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.

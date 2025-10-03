@@ -105,7 +105,7 @@ variable "openshift_version" {
   }
 }
 
-variable "ocp_entitlement" {
+variable "openshift_entitlement" {
   type        = string
   description = "Value that is applied to the entitlements for OCP cluster provisioning."
   default     = null
