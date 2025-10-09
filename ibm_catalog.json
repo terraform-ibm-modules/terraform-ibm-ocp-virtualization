@@ -688,24 +688,6 @@
               "virtual": true
             },
             {
-              "key": "allow_public_access_to_cluster",
-              "type": "boolean",
-              "required": true,
-              "virtual": true,
-              "default_value": true,
-              "options": [
-                {
-                  "displayname": "true",
-                  "value": "true"
-                },
-                {
-                  "displayname": "false",
-                  "value": "false"
-                }
-              ],
-              "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network."
-            },
-            {
               "key": "secrets_manager_service_plan",
               "type": "string",
               "required": true,
@@ -926,7 +908,7 @@
                   "value": true
                 },
                 {
-                  "dependency_input": "allow_public_access_to_cluster",
+                  "dependency_input": "allow_public_access_to_cluster_management",
                   "value": true
                 },
                 {
@@ -950,7 +932,7 @@
                   "reference_version": true
                 }
               ],
-              "version": "v3.58.2"
+              "version": "v3.63.1"
             }
           ],
           "dependency_version_2": true,
