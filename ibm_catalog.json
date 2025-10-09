@@ -688,24 +688,6 @@
               "virtual": true
             },
             {
-              "key": "secrets_manager_service_plan",
-              "type": "string",
-              "required": true,
-              "virtual": true,
-              "default_value": "standard",
-              "options": [
-                {
-                  "displayname": "Standard",
-                  "value": "standard"
-                },
-                {
-                  "displayname": "Trial",
-                  "value": "trial"
-                }
-              ],
-              "description": "The pricing plan to use when provisioning a Secrets Manager instance for centrally managing ingress certificates for OpenShift cluster. Possible values: `standard`, `trial`. You can create only one Trial instance of Secrets Manager per account. Before you can create a new Trial instance, you must delete the existing Trial instance and its reclamation. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-create-instance&interface=ui#upgrade-instance-standard)."
-            },
-            {
               "key": "vpc_file_default_storage_class"
             },
             {
