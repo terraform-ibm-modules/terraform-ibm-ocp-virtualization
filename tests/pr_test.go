@@ -287,7 +287,7 @@ func TestAddonConfigurations(t *testing.T) {
 		map[string]interface{}{
 			"region":                       "eu-de",
 			"prefix":                       options.Prefix,
-			"secrets_manager_service_plan": "trial",
+			"secrets_manager_service_plan": "__NULL__",
 		},
 	)
 
