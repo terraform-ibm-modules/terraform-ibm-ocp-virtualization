@@ -139,7 +139,18 @@
             },
             {
               "key": "prefix",
-              "required": true
+              "required": true,
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
             },
             {
               "key": "existing_resource_group_name",
@@ -151,9 +162,7 @@
                 "config_constraints": {
                   "identifier": "rg_name"
                 }
-              },
-              "default_value": "Default",
-              "description": "The name of an existing resource group to provision the resources."
+              }
             },
             {
               "key": "region",
@@ -368,15 +377,8 @@
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
-              "service_name": "All Account Management services",
-              "notes": "[Optional] Required to create new resource groups when enabling the Account Configuration integration."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
               "service_name": "All Identity and Access enabled services",
-              "notes": "[Optional] Required to create new resource groups with account settings when enabling the Account Configuration integration."
+              "notes": "[Optional] Required to to create trusted profile for App Configuration aggregator which is used for compliance scanning."
             },
             {
               "role_crns": [
@@ -522,10 +524,34 @@
             {
               "key": "prefix",
               "type": "string",
-              "default_value": "__NOT_SET__",
-              "description": "The prefix to be added to all resources created by this solution. To skip using a prefix, set this value to null or an empty string. The prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It should not exceed 16 characters, must not end with a hyphen('-'), and can not contain consecutive hyphens ('--'). Example: prod-0405-ocp. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
-              "display_name": "prefix",
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to null or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
               "required": true,
+              "virtual": true,
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              },
+              "default_value": "Default",
+              "description": "The name of an existing resource group to provision the resources. [Learn more](https://cloud.ibm.com/docs/account?topic=account-rgs&interface=ui#create_rgs) about how to create a resource group.",
               "virtual": true
             },
             {
@@ -837,6 +863,11 @@
                   "reference_version": true
                 },
                 {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
                   "dependency_output": "resource_group_id",
                   "version_input": "cluster_resource_group_id"
                 },
@@ -914,7 +945,7 @@
                   "reference_version": true
                 }
               ],
-              "version": "v3.63.1"
+              "version": "v3.66.0"
             }
           ],
           "dependency_version_2": true,
