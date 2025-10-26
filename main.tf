@@ -101,7 +101,7 @@ locals {
 resource "time_sleep" "wait_for_subscription" {
   depends_on = [helm_release.subscription]
 
-  create_duration = "120s"
+  create_duration = "240s"
 }
 
 resource "helm_release" "operator" {
