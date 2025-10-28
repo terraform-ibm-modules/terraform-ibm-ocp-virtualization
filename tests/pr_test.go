@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IBM/go-sdk-core/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -269,27 +270,55 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	cleanupTerraform(t, existingTerraformOptions, prefix)
 }
 
-// TestDependencyPermutations runs dependency permutations for the Virtualization and all its dependencies
-func TestDependencyPermutations(t *testing.T) {
-
-	// Provision resources first
-	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
+func TestAddonConfigurations(t *testing.T) {
+	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "virt",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-ocp-virtualization",
-			OfferingFlavor: "fully-configurable",
-			Inputs: map[string]interface{}{
-				"prefix":                    prefix,
-				"cluster_id":                terraform.Output(t, existingTerraformOptions, "workload_cluster_id"),
-				"cluster_resource_group_id": terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"),
-			},
-		},
+		Testing:               t,
+		Prefix:                "virt-def",
+		OverrideInputMappings: core.BoolPtr(true),
+		QuietMode:             false,
 	})
 
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-ocp-virtualization",
+		"fully-configurable",
+		map[string]interface{}{
+			"region":                       "eu-de",
+			"secrets_manager_service_plan": "__NULL__",
+		},
+	)
+
+	//	use existing secrets manager instance to help prevent hitting trial instance limit in account
+	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		{
+			OfferingName:   "deploy-arch-ibm-secrets-manager",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"existing_secrets_manager_crn":         permanentResources["privateOnlySecMgrCRN"],
+				"service_plan":                         "__NULL__", // no plan value needed when using existing SM
+				"skip_secrets_manager_iam_auth_policy": true,       // since using an existing Secrets Manager instance, attempting to re-create auth policy can cause conflicts if the policy already exists
+				"secret_groups":                        []string{}, // passing empty array for secret groups as default value is creating general group and it will cause conflicts as we are using an existing SM
+			},
+		},
+		// // Disable target / route creation to help prevent hitting quota in account
+		{
+			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_metrics_routing_to_cloud_monitoring": false,
+			},
+		},
+		{
+			OfferingName:   "deploy-arch-ibm-activity-tracker",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_activity_tracker_event_routing_to_cloud_logs": false,
+			},
+		},
+	}
+
+	err := options.RunAddonTest()
+	require.NoError(t, err)
 }
