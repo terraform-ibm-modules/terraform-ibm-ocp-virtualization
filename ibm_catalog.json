@@ -139,7 +139,18 @@
             },
             {
               "key": "prefix",
-              "required": true
+              "required": true,
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
             },
             {
               "key": "existing_resource_group_name",
@@ -522,11 +533,21 @@
             {
               "key": "prefix",
               "type": "string",
-              "default_value": "__NOT_SET__",
-              "description": "The prefix to be added to all resources created by this solution. To skip using a prefix, set this value to null or an empty string. The prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It should not exceed 16 characters, must not end with a hyphen('-'), and can not contain consecutive hyphens ('--'). Example: prod-0405-ocp. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
+              "default_value": "dev",
+              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to null or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
               "display_name": "prefix",
               "required": true,
-              "virtual": true
+              "virtual": true,
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
             },
             {
               "key": "cluster_name",
