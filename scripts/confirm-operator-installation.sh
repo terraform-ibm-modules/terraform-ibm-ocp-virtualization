@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+echo "Waiting for install plan to be created"
 sleep 120
 
 for i in {1..30}; do
