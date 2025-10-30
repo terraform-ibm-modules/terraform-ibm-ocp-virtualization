@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 echo "Waiting for install plan to be created"
 sleep 120
