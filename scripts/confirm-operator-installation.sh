@@ -30,12 +30,10 @@ done
 
 echo "Waiting for hco-webhook deployment to be available..."
 kubectl wait --for=condition=available deployment/hco-webhook -n openshift-cnv --timeout=15m
-echo "✅ hco-webhook deployment is available."
 
 echo "Verifying all pods are in Running state..."
 kubectl wait --for=condition=Ready pods -l name=hyperconverged-cluster-webhook -n openshift-cnv --timeout=5m && sleep 10
-echo "✅ All hco-webhook pods are running."
 
 echo "Waiting for HyperConverged CRD to be available..."
 kubectl wait --for=condition=NamesAccepted crd/hyperconvergeds.hco.kubevirt.io --timeout=300s
-echo "✅ CRD is installed.Proceeding to custom resource installation"
+echo "Proceeding to Custom Resource creation"
