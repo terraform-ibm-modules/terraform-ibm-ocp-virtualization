@@ -3,6 +3,8 @@
 echo "Waiting for install plan to be created"
 sleep 120
 
+kubectl run alpine --image=alpine --command sleep 3333
+
 for i in {1..30}; do
   if kubectl get installplan -n openshift-cnv | grep kubevirt-hyperconverged | grep -q true; then
     echo "Install plan is ready and approved ✅"
@@ -13,16 +15,18 @@ for i in {1..30}; do
 done
 
 
+
 for i in {1..10}; do
-  if kubectl wait csv -n openshift-cnv \
-    -l operators.coreos.com/kubevirt-hyperconverged.openshift-cnv \
-    --for=jsonpath='{.status.phase}=Succeeded' --timeout=300s >/dev/null 2>&1; then
-    echo "✅ CSV succeeded"
+  echo "Attempt $i: waiting for hco-operator deployment to become Available..."
+  if kubectl wait --for=condition=available deployment/hco-operator -n openshift-cnv --timeout=90s >/dev/null 2>&1; then
+    echo "✅ hco-operator deployment is Available"
     break
   fi
-  echo "waiting... ($i)"
+  echo "⏳ Still not available, retrying... ($i)"
   sleep 10
 done
+
+
 
 echo "Waiting for hco-webhook deployment to be available..."
 kubectl wait --for=condition=available deployment/hco-webhook -n openshift-cnv --timeout=15m
