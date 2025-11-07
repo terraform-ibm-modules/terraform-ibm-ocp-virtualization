@@ -364,7 +364,8 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.12.2"
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         },
         {
           "label": "Fully configurable",
@@ -928,7 +929,8 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.12.2"
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         }
       ]
     }
