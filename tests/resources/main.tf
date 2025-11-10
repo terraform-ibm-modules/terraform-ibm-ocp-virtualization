@@ -96,7 +96,7 @@ module "ocp_base" {
   disable_outbound_traffic_protection = true # set as True to enable outbound traffic; required for accessing Operator Hub in the OpenShift console.
   addons = {
     openshift-data-foundation = {
-      version         = "4.18.0"
+      version         = "4.19.0"
       parameters_json = <<PARAMETERS_JSON
         {
             "osdStorageClassName":"localblock",

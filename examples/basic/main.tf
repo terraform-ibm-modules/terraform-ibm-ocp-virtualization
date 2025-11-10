@@ -78,7 +78,7 @@ locals {
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.70.0"
+  version              = "3.71.3"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   tags                 = var.resource_tags
@@ -93,7 +93,7 @@ module "ocp_base" {
   addons = {
     "vpc-file-csi-driver" = { version = "2.0" }
     "openshift-data-foundation" = {
-      version         = "4.17.0"
+      version         = "4.19.0"
       parameters_json = <<PARAMETERS_JSON
         {
             "osdStorageClassName":"localblock",
