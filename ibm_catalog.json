@@ -620,7 +620,7 @@
               "required": true,
               "virtual": true,
               "type": "string",
-              "default_value": "4.18",
+              "default_value": "4.19",
               "description": "Version of the OpenShift cluster to provision.",
               "options": [
                 {
@@ -630,6 +630,10 @@
                 {
                   "displayname": "4.18",
                   "value": "4.18"
+                },
+                {
+                  "displayname": "4.19",
+                  "value": "4.19"
                 }
               ]
             },
