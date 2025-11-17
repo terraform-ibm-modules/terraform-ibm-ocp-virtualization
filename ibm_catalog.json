@@ -211,32 +211,21 @@
             {
               "key": "machine_type",
               "required": true,
-              "options": [
-                {
-                  "displayname": "bx2.metal.96x384",
-                  "value": "bx2.metal.96x384"
-                },
-                {
-                  "displayname": "bx2d.metal.96x384",
-                  "value": "bx2d.metal.96x384"
-                },
-                {
-                  "displayname": "cx2.metal.96x192",
-                  "value": "cx2.metal.96x192"
-                },
-                {
-                  "displayname": "cx2d.metal.96x192",
-                  "value": "cx2d.metal.96x192"
-                },
-                {
-                  "displayname": "mx2.metal.96x768",
-                  "value": "mx2.metal.96x768"
-                },
-                {
-                  "displayname": "mx2d.metal.96x768",
-                  "value": "mx2d.metal.96x768"
+              "type": "string",
+              "description": "A worker node flavor that defines the architecture, virtual CPU, memory, and disk space in the default worker pool.",
+              "custom_config": {
+                "type": "worker_node_flavors",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "associations": {
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "optionsRefresh": true
+                    }
+                  ]
                 }
-              ]
+              }
             },
             {
               "key": "workers_per_zone"
