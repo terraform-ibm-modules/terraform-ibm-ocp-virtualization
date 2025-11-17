@@ -93,7 +93,7 @@ module "ocp_base" {
   addons = {
     "vpc-file-csi-driver" = { version = "2.0" }
     "openshift-data-foundation" = {
-      version         = "4.17.0"
+      version         = "4.19.0"
       parameters_json = <<PARAMETERS_JSON
         {
             "osdStorageClassName":"localblock",
