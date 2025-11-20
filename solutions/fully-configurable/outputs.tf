@@ -31,4 +31,3 @@ output "next_step_primary_url" {
   value       = "https://cloud.ibm.com/containers/cluster-management/clusters/${module.virtualization.cluster_id}/overview"
   description = "Primary URL"
 }
-
