@@ -514,7 +514,7 @@
               {
                 "diagram": {
                   "caption": "Red Hat OpenShift cluster with OpenShift Virtualization for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-ai/main/reference-architectures/deployable-architecture-ocp-virtualization-fully-configurable.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/refs/heads/main/reference-architectures/deployable-architecture-ocp-virtualization-fully-configurable.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This deployable architecture illustrates the deployment of a Red Hat OpenShift cluster on IBM Cloud with bare-metal worker nodes, showcasing the key components and their interactions for openshift virtualization support.<br><br>You can create a fully-configured <b>VPC</b> by selecting the [Cloud automation for VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vpc-2af61763-f8ef-4527-a815-b92166f29bc8-global) dependency or you can use an existing VPC. The VPC can be provisioned either in a single-zone or multi-zone configuration, depending on your availability requirements. By default, the VPC add-on provisions a single-zone VPC, forming the foundation for your OpenShift cluster. <br><br>To utilize the capabilities of <b>Openshift Virtualization</b>, you must configure <b>at least one bare-metal worker pool</b> within your cluster. The architecture supports a flexible compute environment, allowing you to deploy a mix of <b>bare-metal</b> and <b>vpc</b> nodes across different worker pools. This solution offers single worker pool that are spread across a single zone, along with the following add-ons installed: <b>OpenShift Data Foundation (ODF)</b> and the <b>vpc-file-csi-driver</b>.<br><br>A <b>Cloud Object Storage (COS)</b> instance is required for the OpenShift cluster. Within this instance, an Object Storage bucket is created, which serves as the internal registry storage for the OpenShift cluster. The [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) deployable architecture can be used to create a COS instance. Additionally, the storage bucket can be encrypted using <b>Key Management Services(KMS)</b> to enhance security.<br><br>For logging and monitoring needs, you can enable <b>Observability</b> for your cluster. [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) provides advanced monitoring, logging, and operational insights into the performance and health of your deployment.<br><br><b>Secrets Manager</b> Integration can also be enabled by using [Cloud automation for Secrets Manager](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-secrets-manager-6d6ebc76-7bbd-42f5-8bc7-78f4fabd5944-global) for centrally managing Ingress subdomain certificates, ensuring the secure management of sensitive credentials.<br><br>This architecture provides a robust and quick foundation for deploying and managing your Red Hat OpenShift cluster, enabling seamless Openshift Virtualization."
@@ -530,12 +530,12 @@
               "key": "prefix",
               "type": "string",
               "default_value": "dev",
-              "random_string": {
-                "length": 4
-              },
               "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to null or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
               "required": true,
               "virtual": true,
+              "random_string": {
+                "length": 4
+              },
               "value_constraints": [
                 {
                   "type": "regex",
@@ -620,7 +620,7 @@
               "required": true,
               "virtual": true,
               "type": "string",
-              "default_value": "4.18",
+              "default_value": "4.19",
               "description": "Version of the OpenShift cluster to provision.",
               "options": [
                 {
@@ -630,6 +630,10 @@
                 {
                   "displayname": "4.18",
                   "value": "4.18"
+                },
+                {
+                  "displayname": "4.19",
+                  "value": "4.19"
                 }
               ]
             },
