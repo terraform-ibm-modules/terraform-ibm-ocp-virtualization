@@ -18,7 +18,7 @@ output "cluster_crn" {
 }
 
 output "next_steps_text" {
-  value       = "Your Red Hat OpenShift environment is ready."
+  value       = "Your Red Hat OpenShift cluster is ready."
   description = "Next steps text"
 }
 
