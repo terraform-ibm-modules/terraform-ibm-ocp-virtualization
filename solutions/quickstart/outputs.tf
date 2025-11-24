@@ -73,12 +73,12 @@ output "master_status" {
 }
 
 output "next_steps_text" {
-  value       = "Your Red Hat OpenShift environment is ready."
+  value       = "Your Red Hat OpenShift cluster is ready."
   description = "Next steps text"
 }
 
 output "next_step_primary_label" {
-  value       = "Go to cluster"
+  value       = "OpenShift cluster web console"
   description = "Primary label"
 }
 
