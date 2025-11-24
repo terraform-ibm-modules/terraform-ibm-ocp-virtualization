@@ -217,6 +217,10 @@
               "required": true,
               "options": [
                 {
+                  "displayname": "bx2.4x16",
+                  "value": "bx2.4x16"
+                },
+                {
                   "displayname": "bx2.metal.96x384",
                   "value": "bx2.metal.96x384"
                 },
