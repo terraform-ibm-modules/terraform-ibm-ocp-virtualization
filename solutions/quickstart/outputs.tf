@@ -83,6 +83,16 @@ output "next_step_primary_label" {
 }
 
 output "next_step_primary_url" {
+  value       = "https://console-openshift-console.${module.ocp_base.ingress_hostname}/dashboards"
+  description = "primary url"
+}
+
+output "next_step_secondary_label" {
+  value       = "Red Hat OpenShift cluster overview page"
+  description = "Secondary label"
+}
+
+output "next_step_secondary_url" {
   value       = "https://cloud.ibm.com/containers/cluster-management/clusters/${module.ocp_base.cluster_id}/overview"
-  description = "Primary URL"
+  description = "Secondary URL"
 }
