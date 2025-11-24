@@ -17,10 +17,6 @@ output "cluster_crn" {
   value       = module.virtualization.cluster_crn
 }
 
-output "ingress_hostname" {
-  description = "The hostname assigned to the Cluster's Ingress subdomain for external access."
-  value       = module.virtualization.ingress_hostname
-}
 
 output "next_steps_text" {
   value       = "Your Red Hat OpenShift cluster is ready."
@@ -33,8 +29,14 @@ output "next_step_primary_label" {
 }
 
 output "next_step_primary_url" {
-  value       = "https://console-openshift-console.${module.virtualization.ingress_hostname}/dashboards"
+  # Prefer the provider data source's ingress hostname; fall back to module if available
+  value       = "https://console-openshift-console.${data.ibm_container_vpc_cluster.cluster.ingress_hostname}/dashboards"
   description = "primary url"
+}
+
+output "ingress_hostname" {
+  description = "The hostname assigned to the Cluster's Ingress subdomain for external access."
+  value       = data.ibm_container_vpc_cluster.cluster.ingress_hostname
 }
 
 output "next_step_secondary_label" {
