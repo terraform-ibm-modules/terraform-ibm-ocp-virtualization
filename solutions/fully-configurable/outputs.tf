@@ -23,7 +23,7 @@ output "next_steps_text" {
 }
 
 output "next_step_primary_label" {
-  value       = "Go to cluster"
+  value       = "OpenShift cluster web console"
   description = "Primary label"
 }
 
