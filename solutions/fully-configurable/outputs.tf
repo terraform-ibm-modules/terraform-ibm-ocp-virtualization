@@ -27,6 +27,11 @@ output "next_step_primary_label" {
   description = "Primary label"
 }
 
+output "ingress_hostname" {
+  description = "The hostname assigned to the Cluster's Ingress subdomain for external access."
+  value       = module.virtualization.ingress_hostname
+}
+
 output "next_step_primary_url" {
   value       = "https://cloud.ibm.com/containers/cluster-management/clusters/${module.virtualization.cluster_id}/overview"
   description = "Primary URL"
