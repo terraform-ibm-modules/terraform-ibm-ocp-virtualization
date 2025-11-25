@@ -217,6 +217,10 @@
               "required": true,
               "options": [
                 {
+                  "displayname": "bx2.4x16",
+                  "value": "bx2.4x16"
+                },
+                {
                   "displayname": "bx2.metal.96x384",
                   "value": "bx2.metal.96x384"
                 },
@@ -645,6 +649,10 @@
               "description": "Specifies the machine type for the default worker pool. This determines the CPU, memory, and disk resources available to each worker node. For OpenShift Virtualization installation, machines should be VPC bare metal servers. Refer [IBM Cloud documentation for available machine types](https://cloud.ibm.com/docs/vpc?topic=vpc-bare-metal-servers-profile&interface=ui#bare-metal-profile-availability-by-region).",
               "virtual": true,
               "options": [
+                {
+                  "displayname": "bx2.4x16",
+                  "value": "bx2.4x16"
+                },
                 {
                   "displayname": "bx2.metal.96x384",
                   "value": "bx2.metal.96x384"
