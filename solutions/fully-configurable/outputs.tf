@@ -29,7 +29,6 @@ output "next_step_primary_label" {
 }
 
 output "next_step_primary_url" {
-  # Use the ingress hostname exported by the virtualization module (avoid duplicate data blocks)
   value       = "https://console-openshift-console.${module.virtualization.ingress_hostname}/dashboards"
   description = "primary url"
 }
