@@ -6,11 +6,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type     = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-data "ibm_container_vpc_cluster" "cluster" {
-  name   = var.cluster_id
-  resource_group_id = var.cluster_resource_group_id
-}
-
 
 #######################################################################################################################
 # Virtualization
