@@ -29,14 +29,14 @@ output "next_step_primary_label" {
 }
 
 output "next_step_primary_url" {
-  # Prefer the provider data source's ingress hostname; fall back to module if available
-  value       = "https://console-openshift-console.${data.ibm_container_vpc_cluster.cluster.ingress_hostname}/dashboards"
+  # Use the ingress hostname exported by the virtualization module (avoid duplicate data blocks)
+  value       = "https://console-openshift-console.${module.virtualization.ingress_hostname}/dashboards"
   description = "primary url"
 }
 
 output "ingress_hostname" {
   description = "The hostname assigned to the Cluster's Ingress subdomain for external access."
-  value       = data.ibm_container_vpc_cluster.cluster.ingress_hostname
+  value       = module.virtualization.ingress_hostname
 }
 
 output "next_step_secondary_label" {
