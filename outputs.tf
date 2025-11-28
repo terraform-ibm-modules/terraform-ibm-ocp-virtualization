@@ -17,4 +17,8 @@ output "cluster_crn" {
   value       = data.ibm_container_vpc_cluster.cluster.crn
 }
 
+output "ingress_hostname" {
+  description = "Ingress hostname for the cluster"
+  value       = data.ibm_container_vpc_cluster.cluster.ingress_hostname
+}
 ##############################################################################
