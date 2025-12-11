@@ -78,6 +78,7 @@
           "name": "quickstart",
           "index": 1,
           "install_type": "fullstack",
+          "short_description": "Ideal for users new to IBM Cloud or OpenShift Virtualization who want to get started without configuring underlying infrastructure.",
           "working_directory": "solutions/quickstart",
           "iam_permissions": [
             {
@@ -400,6 +401,7 @@
           "name": "fully-configurable",
           "index": 2,
           "install_type": "fullstack",
+          "short_description": "Ideal for users who want flexibility with a reliable starting point.",
           "working_directory": "solutions/fully-configurable",
           "iam_permissions": [
             {
@@ -863,7 +865,12 @@
               "custom_config": {
                 "type": "code_editor",
                 "grouping": "deployment",
-                "original_grouping": "deployment"
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
               }
             },
             {
