@@ -29,8 +29,7 @@ func setupOptions(t *testing.T, prefix string, terraformDir string, ocpVersion s
 }
 
 func TestRunBasicExample(t *testing.T) {
-	// t.Parallel()
-	t.Skip()
+	t.Parallel()
 
 	options := setupOptions(t, "ocp-virt", basicExampleDir, ocpVersion1)
 

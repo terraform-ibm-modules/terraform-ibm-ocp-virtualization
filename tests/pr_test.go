@@ -100,8 +100,7 @@ func TestMain(m *testing.M) {
 * TESTS FOR THE TERRAFORM BASED QUICKSTART DEPLOYABLE ARCHITECTURE *
 ********************************************************************/
 func TestRunQuickstartDASchematics(t *testing.T) {
-	// t.Parallel()
-	t.Skip()
+	t.Parallel()
 
 	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
@@ -135,8 +134,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 }
 
 func TestRunQuickstartDAUpgrade(t *testing.T) {
-	// t.Parallel()
-	t.Skip()
+	t.Parallel()
 
 	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
@@ -213,8 +211,7 @@ func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
 }
 
 func TestRunFullyConfigurableInSchematics(t *testing.T) {
-	// t.Parallel()
-	t.Skip()
+	t.Parallel()
 
 	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
@@ -274,8 +271,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 }
 
 func TestAddonConfigurations(t *testing.T) {
-	// t.Parallel()
-	t.Skip()
+	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:               t,
