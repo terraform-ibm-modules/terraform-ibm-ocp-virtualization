@@ -81,9 +81,8 @@ locals {
 }
 
 module "ocp_base" {
-  #checkov:skip=CKV_TF_2: TEst
-  source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?ref=test-bin"
-  # version                             = "3.74.0"
+  source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
+  version                             = "3.75.7"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
   tags                                = var.resource_tags
