@@ -2,10 +2,12 @@
 package test
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -80,6 +82,24 @@ func walk(r *tarIncludePatterns, s string, d fs.DirEntry, err error) error {
 		}
 	}
 	return nil
+}
+
+func createContainersApikey(t *testing.T, region string, rg string) {
+
+	err := os.Setenv("IBMCLOUD_API_KEY", validateEnvVariable(t, "TF_VAR_ibmcloud_api_key"))
+	require.NoError(t, err, "Failed to set IBMCLOUD_API_KEY environment variable")
+	scriptPath := "../common-dev-assets/scripts/iks-api-key-reset/reset_iks_api_key.sh"
+	cmd := exec.Command("bash", scriptPath, region, rg)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	// Execute the command
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Failed to execute script: %v\nStderr: %s", err, stderr.String())
+	}
+	// Print script output
+	fmt.Println(stdout.String())
 }
 
 // TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
@@ -276,17 +296,23 @@ func TestAddonConfigurations(t *testing.T) {
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:               t,
 		Prefix:                "virt-def",
+		ResourceGroup:         resourceGroup,
 		OverrideInputMappings: core.BoolPtr(true),
 		QuietMode:             false,
 	})
+	region := "eu-de"
+
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, region, options.ResourceGroup)
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
 		options.Prefix,
 		"deploy-arch-ibm-ocp-virtualization",
 		"fully-configurable",
 		map[string]interface{}{
-			"region":                       "eu-de",
+			"region":                       region,
 			"secrets_manager_service_plan": "__NULL__",
+			"existing_resource_group_name": options.ResourceGroup,
 		},
 	)
 
