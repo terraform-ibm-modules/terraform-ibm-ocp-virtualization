@@ -4,11 +4,9 @@ package test
 import (
 	"bytes"
 	"fmt"
-	"io/fs"
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -31,9 +29,11 @@ const resourceGroup = "geretain-test-resources"
 const quickStartTerraformDir = "solutions/quickstart"
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
 
-var excludeDirs = []string{".terraform", ".docs", ".github", ".git", ".idea", "common-dev-assets", "examples", "tests", "reference-architectures"}
-
-var includeFiletypes = []string{".tf", ".yaml", ".py", ".tpl", ".md", ".sh"}
+var excludeDirs = []string{}
+var includeFiletypes = []string{
+	".md",
+	".sh",
+}
 
 // Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
@@ -42,47 +42,6 @@ var (
 	sharedInfoSvc      *cloudinfo.CloudInfoService
 	permanentResources map[string]interface{}
 )
-
-type tarIncludePatterns struct {
-	excludeDirs []string
-
-	includeFiletypes []string
-
-	includeDirs []string
-}
-
-func getTarIncludePatternsRecursively(dir string, dirsToExclude []string, fileTypesToInclude []string) ([]string, error) {
-	r := tarIncludePatterns{dirsToExclude, fileTypesToInclude, nil}
-	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
-		return walk(&r, path, entry, err)
-	})
-	if err != nil {
-		fmt.Println("error")
-		return r.includeDirs, err
-	}
-	return r.includeDirs, nil
-}
-
-func walk(r *tarIncludePatterns, s string, d fs.DirEntry, err error) error {
-	if err != nil {
-		return err
-	}
-	if d.IsDir() {
-		for _, excludeDir := range r.excludeDirs {
-			if strings.Contains(s, excludeDir) {
-				return nil
-			}
-		}
-		if s == ".." {
-			r.includeDirs = append(r.includeDirs, "*.tf")
-			return nil
-		}
-		for _, includeFiletype := range r.includeFiletypes {
-			r.includeDirs = append(r.includeDirs, strings.ReplaceAll(s+"/*"+includeFiletype, "../", ""))
-		}
-	}
-	return nil
-}
 
 func createContainersApikey(t *testing.T, region string, rg string) {
 
@@ -122,7 +81,7 @@ func TestMain(m *testing.M) {
 func TestRunQuickstartDASchematics(t *testing.T) {
 	t.Parallel()
 
-	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	tarIncludePatterns, recurseErr := testhelper.GetTarIncludeDirsWithDefaults("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
@@ -156,7 +115,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 func TestRunQuickstartDAUpgrade(t *testing.T) {
 	t.Parallel()
 
-	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	tarIncludePatterns, recurseErr := testhelper.GetTarIncludeDirsWithDefaults("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
@@ -233,7 +192,7 @@ func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
 func TestRunFullyConfigurableInSchematics(t *testing.T) {
 	t.Parallel()
 
-	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	tarIncludePatterns, recurseErr := testhelper.GetTarIncludeDirsWithDefaults("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
@@ -263,7 +222,7 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
-	tarIncludePatterns, recurseErr := getTarIncludePatternsRecursively("..", excludeDirs, includeFiletypes)
+	tarIncludePatterns, recurseErr := testhelper.GetTarIncludeDirsWithDefaults("..", excludeDirs, includeFiletypes)
 	// if error producing tar patterns (very unexpected) fail test immediately
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
