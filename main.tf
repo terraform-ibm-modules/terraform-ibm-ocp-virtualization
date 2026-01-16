@@ -98,14 +98,23 @@ locals {
   operator_chart_location = "${path.module}/chart/operator"
 }
 
-resource "time_sleep" "wait_for_subscription" {
+
+resource "null_resource" "wait_for_crd" {
   depends_on = [helm_release.subscription]
 
-  create_duration = "240s"
+  provisioner "local-exec" {
+
+    command     = "${path.module}/scripts/confirm-operator-installation.sh"
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
+  }
 }
 
+
 resource "helm_release" "operator" {
-  depends_on       = [time_sleep.wait_for_subscription]
+  depends_on       = [null_resource.wait_for_crd]
   name             = "${data.ibm_container_vpc_cluster.cluster.name}-operator"
   chart            = local.operator_chart_location
   namespace        = local.namespace
