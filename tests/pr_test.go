@@ -300,7 +300,8 @@ func TestAddonConfigurations(t *testing.T) {
 		OverrideInputMappings: core.BoolPtr(true),
 		QuietMode:             false,
 	})
-	region := "eu-de"
+	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key")
+	region, _ := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 	createContainersApikey(t, region, options.ResourceGroup)
