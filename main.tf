@@ -82,7 +82,7 @@ locals {
 }
 
 resource "helm_release" "subscription" {
-  depends_on       = [null_resource.enable_catalog_source]
+  depends_on       = [terraform_data.enable_catalog_source]
   name             = "${data.ibm_container_vpc_cluster.cluster.name}-subscription"
   chart            = local.subscription_chart_location
   namespace        = local.namespace
