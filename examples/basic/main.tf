@@ -108,7 +108,7 @@ module "ocp_base" {
 
 module "virtualization" {
   depends_on                = [module.ocp_base]
-  source                    = "../.."
+  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization.git?ref=update-binaries"
   cluster_id                = module.ocp_base.cluster_id
   cluster_resource_group_id = module.ocp_base.resource_group_id
 }
