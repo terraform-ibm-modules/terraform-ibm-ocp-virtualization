@@ -79,7 +79,6 @@ locals {
   subscription_version        = "v4.17.4"
   subscription_chart_location = "${path.module}/chart/subscription"
   namespace                   = "openshift-cnv" # This is hard-coded because using any other namespace will break the virtualization.
-  binaries_path               = "/tmp"
 }
 
 resource "helm_release" "subscription" {
