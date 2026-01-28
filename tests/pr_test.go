@@ -111,6 +111,9 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		{Name: "openshift_entitlement", Value: "cloud_pak", DataType: "string"},
 	}
 
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, options.Region, options.ResourceGroup)
+
 	err := options.RunSchematicTest()
 	assert.NoError(t, err, "Schematic Test had unexpected error")
 }
