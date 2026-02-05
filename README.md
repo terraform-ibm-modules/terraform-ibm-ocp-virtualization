@@ -114,7 +114,6 @@ You need the following permissions to run this module.
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.1, <2.0.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 3.0.0, < 4.0.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.2.1, < 4.0.0 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
 ### Modules
 
@@ -132,7 +131,7 @@ No modules.
 | [null_resource.enable_catalog_source](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.storageprofile_status](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.update_storage_profile](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [time_sleep.wait_for_subscription](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [null_resource.wait_for_crd](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [ibm_container_cluster_config.cluster_config](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/data-sources/container_cluster_config) | data source |
 | [ibm_container_vpc_cluster.cluster](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/data-sources/container_vpc_cluster) | data source |
 
