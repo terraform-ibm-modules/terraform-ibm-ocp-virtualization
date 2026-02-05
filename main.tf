@@ -76,7 +76,7 @@ resource "terraform_data" "enable_catalog_source" {
 ########################################################################################################################
 
 locals {
-  subscription_version        = "v4.17.4"
+  subscription_version        = "v4.19.15"
   subscription_chart_location = "${path.module}/chart/subscription"
   namespace                   = "openshift-cnv" # This is hard-coded because using any other namespace will break the virtualization.
 }
