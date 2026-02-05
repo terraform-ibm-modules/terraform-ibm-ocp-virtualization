@@ -69,7 +69,7 @@ locals {
      {
        subnet_prefix    = "default"
        pool_name        = "default"
-       machine_type     = "cx2d.metal.96x192"
+       machine_type     = "cx3d.96x240"
        workers_per_zone = 2
        operating_system = "RHCOS"
      }
