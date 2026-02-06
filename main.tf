@@ -28,7 +28,7 @@ resource "kubernetes_config_map_v1_data" "disable_default_storageclass" {
 
 resource "terraform_data" "install_required_binaries" {
   count = var.install_required_binaries ? 1 : 0
-  triggers_replace    = {
+  triggers_replace = {
     KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
   provisioner "local-exec" {
