@@ -108,6 +108,7 @@ func TestRunQuickstartDASchematics(t *testing.T) {
 		{Name: "openshift_entitlement", Value: "cloud_pak", DataType: "string"},
 	}
 
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 	createContainersApikey(t, options.Region, options.ResourceGroup)
 
 	err := options.RunSchematicTest()
@@ -161,9 +162,6 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key") // pragma: allowlist secret
 	region, err := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 	require.NoError(t, err, "Failed to get best VPC region")
-
-	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
-	createContainersApikey(t, region, resourceGroup)
 
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: tempTerraformDir,
