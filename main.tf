@@ -29,7 +29,7 @@ resource "kubernetes_config_map_v1_data" "disable_default_storageclass" {
 resource "terraform_data" "install_required_binaries" {
   count = var.install_required_binaries ? 1 : 0
   triggers_replace = {
-    KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    cluster_id = var.cluster_id
   }
   provisioner "local-exec" {
     command     = "${path.module}/scripts/install-binaries.sh ${local.binaries_path}"
@@ -38,6 +38,9 @@ resource "terraform_data" "install_required_binaries" {
 }
 
 resource "terraform_data" "config_map_status" {
+  triggers_replace = {
+    cluster_id = var.cluster_id
+  }
   provisioner "local-exec" {
     command     = "${path.module}/scripts/get_config_map_status.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
@@ -62,6 +65,9 @@ resource "kubernetes_config_map_v1_data" "set_vpc_file_default_storage_class" {
 }
 
 resource "terraform_data" "enable_catalog_source" {
+  triggers_replace = {
+    cluster_id = var.cluster_id
+  }
   provisioner "local-exec" {
     command     = "${path.module}/scripts/enable_catalog_source.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
@@ -139,6 +145,9 @@ resource "helm_release" "operator" {
 resource "terraform_data" "storageprofile_status" {
   depends_on = [helm_release.operator]
 
+  triggers_replace = {
+    cluster_id = var.cluster_id
+  }
   provisioner "local-exec" {
     command     = "${path.module}/scripts/confirm-storageprofile-status.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
@@ -150,6 +159,11 @@ resource "terraform_data" "storageprofile_status" {
 
 resource "terraform_data" "update_storage_profile" {
   depends_on = [terraform_data.storageprofile_status]
+  
+  triggers_replace = {
+    cluster_id    = var.cluster_id
+    storage_class = var.vpc_file_default_storage_class
+  }
   provisioner "local-exec" {
     command     = "${path.module}/scripts/update_storage_profile.sh ${var.vpc_file_default_storage_class} ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
