@@ -159,7 +159,7 @@ resource "terraform_data" "storageprofile_status" {
 
 resource "terraform_data" "update_storage_profile" {
   depends_on = [terraform_data.storageprofile_status]
-  
+
   triggers_replace = {
     cluster_id    = var.cluster_id
     storage_class = var.vpc_file_default_storage_class
