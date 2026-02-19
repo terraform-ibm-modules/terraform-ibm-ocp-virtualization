@@ -78,6 +78,6 @@ variable "workloads_node_selectors" {
 variable "install_required_binaries" {
   type        = bool
   default     = true
-  description = "When true, run a script to ensure required CLI binaries (kubectl) are available in the runtime; if missing the script will attempt to download them to /tmp. Set to false to skip."
+  description = "When true, run a script to ensure required CLI binary (kubectl) is available in the runtime; if missing the script will attempt to download them to /tmp. Set to false to skip."
   nullable    = false
 }
