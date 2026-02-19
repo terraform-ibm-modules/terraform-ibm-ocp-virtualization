@@ -265,7 +265,7 @@ func TestAddonConfigurations(t *testing.T) {
 		OverrideInputMappings: core.BoolPtr(true),
 		QuietMode:             false,
 	})
-	region := "jp-osa"
+	region := "eu-de"
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 	createContainersApikey(t, region, options.ResourceGroup)
