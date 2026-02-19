@@ -7,7 +7,7 @@ set -o pipefail
 DIRECTORY=${1:-"/tmp"}
 export PATH=$PATH:$DIRECTORY
 # renovate: datasource=github-tags depName=terraform-ibm-modules/common-bash-library
-TAG=v0.2.0
+TAG=v0.2.1
 TMP_DIR=$(mktemp -d "${DIRECTORY}/common-bash-XXXXX")
 
 echo "Downloading common-bash-library version ${TAG}."
