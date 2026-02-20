@@ -2,6 +2,9 @@
 
 set -e
 
+# The binaries downloaded by the install-binaries script are located in the /tmp directory.
+export PATH=$PATH:${1:-"/tmp"}
+
 attempt=0
 retry_wait_time=60
 MAX_ATTEMPTS=10
