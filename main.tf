@@ -26,9 +26,18 @@ resource "kubernetes_config_map_v1_data" "disable_default_storageclass" {
   force = true
 }
 
-resource "null_resource" "config_map_status" {
+resource "terraform_data" "install_required_binaries" {
+  count = var.install_required_binaries ? 1 : 0
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/get_config_map_status.sh"
+    command     = "${path.module}/scripts/install-binaries.sh ${local.binaries_path}"
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "terraform_data" "config_map_status" {
+  depends_on = [terraform_data.install_required_binaries]
+  provisioner "local-exec" {
+    command     = "${path.module}/scripts/get_config_map_status.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
@@ -37,7 +46,7 @@ resource "null_resource" "config_map_status" {
 }
 
 resource "kubernetes_config_map_v1_data" "set_vpc_file_default_storage_class" {
-  depends_on = [null_resource.config_map_status]
+  depends_on = [terraform_data.config_map_status, terraform_data.install_required_binaries]
   metadata {
     name      = "addon-vpc-file-csi-driver-configmap"
     namespace = "kube-system"
@@ -50,9 +59,10 @@ resource "kubernetes_config_map_v1_data" "set_vpc_file_default_storage_class" {
   force = true
 }
 
-resource "null_resource" "enable_catalog_source" {
+resource "terraform_data" "enable_catalog_source" {
+  depends_on = [terraform_data.install_required_binaries]
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/enable_catalog_source.sh"
+    command     = "${path.module}/scripts/enable_catalog_source.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
@@ -65,13 +75,13 @@ resource "null_resource" "enable_catalog_source" {
 ########################################################################################################################
 
 locals {
-  subscription_version        = "v4.17.4"
+  subscription_version        = "v4.19.15"
   subscription_chart_location = "${path.module}/chart/subscription"
   namespace                   = "openshift-cnv" # This is hard-coded because using any other namespace will break the virtualization.
 }
 
 resource "helm_release" "subscription" {
-  depends_on       = [null_resource.enable_catalog_source]
+  depends_on       = [terraform_data.enable_catalog_source]
   name             = "${data.ibm_container_vpc_cluster.cluster.name}-subscription"
   chart            = local.subscription_chart_location
   namespace        = local.namespace
@@ -92,10 +102,11 @@ resource "helm_release" "subscription" {
 
 #########################################################################################################################
 # Deploying the OpenShift Virtualization Operator
-########################################################################################################################
+#########################################################################################################################
 
 locals {
   operator_chart_location = "${path.module}/chart/operator"
+  binaries_path           = "/tmp"
 }
 
 resource "time_sleep" "wait_for_subscription" {
@@ -124,11 +135,10 @@ resource "helm_release" "operator" {
   ]
 }
 
-resource "null_resource" "storageprofile_status" {
-  depends_on = [helm_release.operator]
-
+resource "terraform_data" "storageprofile_status" {
+  depends_on = [helm_release.operator, terraform_data.install_required_binaries]
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/confirm-storageprofile-status.sh"
+    command     = "${path.module}/scripts/confirm-storageprofile-status.sh ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
@@ -136,10 +146,10 @@ resource "null_resource" "storageprofile_status" {
   }
 }
 
-resource "null_resource" "update_storage_profile" {
-  depends_on = [null_resource.storageprofile_status]
+resource "terraform_data" "update_storage_profile" {
+  depends_on = [terraform_data.storageprofile_status, terraform_data.install_required_binaries]
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/update_storage_profile.sh ${var.vpc_file_default_storage_class}"
+    command     = "${path.module}/scripts/update_storage_profile.sh ${var.vpc_file_default_storage_class} ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
