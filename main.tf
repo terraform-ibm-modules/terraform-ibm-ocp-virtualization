@@ -110,7 +110,7 @@ locals {
 }
 
 resource "terraform_data" "check_hyperconverged_status" {
-  depends_on = [helm_release.subscription]
+  depends_on = [helm_release.subscription, terraform_data.install_required_binaries]
 
   provisioner "local-exec" {
     command     = "${path.module}/scripts/check_hyperconverged_status.sh ${local.binaries_path}"
