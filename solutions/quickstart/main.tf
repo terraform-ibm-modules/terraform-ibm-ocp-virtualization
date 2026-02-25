@@ -133,7 +133,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "virtualization" {
   depends_on                     = [module.ocp_base]
-  source                         = "../.."
+  source                         = "git::https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization.git?ref=ocofaigh-patch-1"
   cluster_id                     = module.ocp_base.cluster_id
   cluster_resource_group_id      = module.ocp_base.resource_group_id
   cluster_config_endpoint_type   = var.cluster_config_endpoint_type
