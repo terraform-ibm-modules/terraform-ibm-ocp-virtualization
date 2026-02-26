@@ -109,14 +109,20 @@ locals {
   binaries_path           = "/tmp"
 }
 
-resource "time_sleep" "wait_for_subscription" {
-  depends_on = [helm_release.subscription]
+resource "terraform_data" "check_hyperconverged_status" {
+  depends_on = [helm_release.subscription, terraform_data.install_required_binaries]
 
-  create_duration = "240s"
+  provisioner "local-exec" {
+    command     = "${path.module}/scripts/check_hyperconverged_status.sh ${local.binaries_path}"
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
+  }
 }
 
 resource "helm_release" "operator" {
-  depends_on       = [time_sleep.wait_for_subscription]
+  depends_on       = [terraform_data.check_hyperconverged_status]
   name             = "${data.ibm_container_vpc_cluster.cluster.name}-operator"
   chart            = local.operator_chart_location
   namespace        = local.namespace
