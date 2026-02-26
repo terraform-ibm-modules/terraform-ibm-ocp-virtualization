@@ -116,5 +116,3 @@ echo ""
 echo "========================================="
 echo "✓ HyperConverged CRD is successfully installed and operator is running!"
 echo "========================================="
-
-# Made with Bob
