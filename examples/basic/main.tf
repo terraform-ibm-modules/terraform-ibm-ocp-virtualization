@@ -58,21 +58,21 @@ locals {
   }
 
   worker_pools = [
-    {
-      subnet_prefix    = "default"
-      pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
-      machine_type     = "bx2.4x16"
-      workers_per_zone = 2 # minimum of 2 is allowed when using single zone
-      operating_system = "RHCOS"
-    }
+    #{
+      #subnet_prefix    = "default"
+      #pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
+      #machine_type     = "bx2.4x16"
+      #workers_per_zone = 2 # minimum of 2 is allowed when using single zone
+      #operating_system = "RHCOS"
+    #}
     # Allocating a bare-metal worker node depends on the availability in that particular region.
-    # {
-    #   subnet_prefix    = "default"
-    #   pool_name        = "bare-metal"
-    #   machine_type     = "cx2d.metal.96x192"
-    #   workers_per_zone = 2
-    #   operating_system = "RHCOS"
-    # }
+     {
+       subnet_prefix    = "default"
+       pool_name        = "default"
+       machine_type     = "cx3d.96x240"
+       workers_per_zone = 2
+       operating_system = "RHCOS"
+     }
   ]
 }
 
@@ -116,7 +116,7 @@ module "ocp_base" {
 
 module "virtualization" {
   depends_on                = [module.ocp_base]
-  source                    = "../.."
+  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization.git?ref=update-binaries"
   cluster_id                = module.ocp_base.cluster_id
   cluster_resource_group_id = module.ocp_base.resource_group_id
 }
