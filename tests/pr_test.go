@@ -9,8 +9,10 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/IBM/go-sdk-core/v5/core"
+	"github.com/google/uuid"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -159,6 +161,11 @@ func validateEnvVariable(t *testing.T, varName string) string {
 	return val
 }
 
+func generateUniqueResourceGroupName(baseName string) string {
+	id := uuid.New().String()[:8]
+	return fmt.Sprintf("%s-%s", baseName, id)
+}
+
 func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Options {
 	tempTerraformDir, err := files.CopyTerraformFolderToTemp(realTerraformDir, prefix)
 	require.NoError(t, err, "Failed to create temporary Terraform folder")
@@ -166,21 +173,29 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 	region, err := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 	require.NoError(t, err, "Failed to get best VPC region")
 
+	uniqueResourceGroup := generateUniqueResourceGroupName(prefix)
+
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: tempTerraformDir,
 		Vars: map[string]interface{}{
-			"prefix": prefix,
-			"region": region,
+			"prefix":         prefix,
+			"region":         region,
+			"resource_group": uniqueResourceGroup,
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, err = terraform.InitAndApplyE(t, existingTerraformOptions)
-	require.NoError(t, err, "Init and Apply of temp existing resource failed")
-
+	err = sharedInfoSvc.WithNewResourceGroup(uniqueResourceGroup, func() error {
+		// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+		createContainersApikey(t, region, uniqueResourceGroup)
+		time.Sleep(5 * time.Second)
+		terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
+		_, err := terraform.InitAndApplyE(t, existingTerraformOptions)
+		return err
+	})
+	require.NoError(t, err, "Failed to initialize and apply Terraform")
 	return existingTerraformOptions
 }
 
@@ -234,25 +249,31 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 	// Provision existing resources first
 	prefix := fmt.Sprintf("ocp-existing-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
-
-	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
-		Testing:               t,
-		Prefix:                "fc-upg",
-		TarIncludePatterns:    tarIncludePatterns,
-		TemplateFolder:        fullyConfigurableTerraformDir,
-		Tags:                  []string{"test-schematic"},
-		DeleteWorkspaceOnFail: false,
-	})
-
-	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
-		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
-		{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
+	skip, err := testhelper.ShouldSkipUpgradeTest(t)
+	if err != nil {
+		t.Fatal(err)
 	}
+	if !skip {
+		existingTerraformOptions := setupTerraform(t, prefix, "./resources")
 
-	require.NoError(t, options.RunSchematicUpgradeTest(), "This should not have errored")
-	cleanupTerraform(t, existingTerraformOptions, prefix)
+		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+			Testing:               t,
+			Prefix:                "fc-upg",
+			TarIncludePatterns:    tarIncludePatterns,
+			TemplateFolder:        fullyConfigurableTerraformDir,
+			Tags:                  []string{"test-schematic"},
+			DeleteWorkspaceOnFail: false,
+		})
+
+		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
+			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
+		}
+
+		require.NoError(t, options.RunSchematicUpgradeTest(), "This should not have errored")
+		cleanupTerraform(t, existingTerraformOptions, prefix)
+	}
 }
 
 func TestAddonConfigurations(t *testing.T) {
