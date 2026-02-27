@@ -76,6 +76,14 @@ locals {
   ]
 }
 
+# Ensure to use addons versions supported by cluster version
+# See ibmcloud ks cluster addon versions
+locals {
+  ocp_version               = "4.19"
+  vpc_file_csi_driver       = "2.0"
+  openshift_data_foundation = "4.19.0"
+}
+
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
   version              = "3.78.7"
@@ -86,14 +94,14 @@ module "ocp_base" {
   force_delete_storage = true
   vpc_id               = ibm_is_vpc.vpc.id
   vpc_subnets          = local.cluster_vpc_subnets
-  ocp_version          = "4.19"
+  ocp_version          = local.ocp_version
   worker_pools         = local.worker_pools
   access_tags          = var.access_tags
   ocp_entitlement      = var.ocp_entitlement
   addons = {
-    "vpc-file-csi-driver" = { version = "2.0" }
+    "vpc-file-csi-driver" = { version = local.vpc_file_csi_driver }
     "openshift-data-foundation" = {
-      version         = "4.19.0"
+      version         = local.openshift_data_foundation
       parameters_json = <<PARAMETERS_JSON
         {
             "osdStorageClassName":"localblock",
