@@ -3,7 +3,7 @@
 #######################################################################################################################
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.4.7"
+  version                      = "1.4.8"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -37,7 +37,7 @@ locals {
 
 module "vpc" {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version             = "8.13.2"
+  version             = "8.15.5"
   resource_group_id   = module.resource_group.resource_group_id
   region              = var.region
   name                = "vpc"
@@ -102,7 +102,7 @@ locals {
 
 module "ocp_base" {
   source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version                             = "3.78.7"
+  version                             = "3.81.7"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
   tags                                = var.cluster_resource_tags
