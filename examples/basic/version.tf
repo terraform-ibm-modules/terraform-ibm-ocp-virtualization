@@ -4,7 +4,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "ibm-cloud/ibm"
-      version = "1.80.0"
+      version = "1.88.0"
     }
     helm = {
       source  = "hashicorp/helm"
