@@ -37,7 +37,7 @@ locals {
 
 module "vpc" {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version             = "8.16.2"
+  version             = "8.17.0"
   resource_group_id   = module.resource_group.resource_group_id
   region              = var.region
   name                = "vpc"
@@ -102,7 +102,7 @@ locals {
 
 module "ocp_base" {
   source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version                             = "3.83.3"
+  version                             = "3.84.0"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
   tags                                = var.cluster_resource_tags
