@@ -90,7 +90,7 @@ resource "helm_release" "subscription" {
   wait             = true
   recreate_pods    = true
   force_update     = true
-  atomic           = true
+  atomic           = var.rollback_on_failure
 
   set = [
     {
@@ -133,7 +133,7 @@ resource "helm_release" "operator" {
   recreate_pods    = true
   force_update     = true
   disable_webhooks = true
-  atomic           = true
+  atomic           = var.rollback_on_failure
 
   values = [
     yamlencode({
