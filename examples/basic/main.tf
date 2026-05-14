@@ -60,7 +60,7 @@ locals {
   worker_pools = [
       {
          subnet_prefix    = "default"
-         pool_name        = "bare-metal"
+         pool_name        = "default"
          machine_type     = "cx2d.metal.96x192"
          workers_per_zone = 2
          operating_system = "RHCOS"
