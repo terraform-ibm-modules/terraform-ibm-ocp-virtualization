@@ -27,17 +27,17 @@ resource "ibm_is_vpc" "vpc" {
 }
 
 resource "ibm_is_public_gateway" "gateway" {
-  name           = "${var.prefix}-gateway-1"
+  name           = "${var.prefix}-gateway-2"
   vpc            = ibm_is_vpc.vpc.id
   resource_group = module.resource_group.resource_group_id
-  zone           = "${var.region}-1"
+  zone           = "${var.region}-2"
 }
 
 resource "ibm_is_subnet" "subnet_zone_1" {
-  name                     = "${var.prefix}-subnet-1"
+  name                     = "${var.prefix}-subnet-2"
   vpc                      = ibm_is_vpc.vpc.id
   resource_group           = module.resource_group.resource_group_id
-  zone                     = "${var.region}-1"
+  zone                     = "${var.region}-2"
   total_ipv4_address_count = 256
   public_gateway           = ibm_is_public_gateway.gateway.id
 }
