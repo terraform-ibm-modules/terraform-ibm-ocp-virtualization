@@ -1,0 +1,27 @@
+{{- if .Values.network.exposeSshService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.vm.name }}-ssh
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.vm.name }}
+    kubevirt.io/vm: {{ .Values.vm.name }}
+spec:
+  type: {{ .Values.network.serviceType | default "ClusterIP" }}
+  selector:
+    kubevirt.io/vm: {{ .Values.vm.name }}
+  ports:
+    - name: ssh
+      port: 22
+      targetPort: 22
+      protocol: TCP
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 443
+      protocol: TCP
+{{- end }}
