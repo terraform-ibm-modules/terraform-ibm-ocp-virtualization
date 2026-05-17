@@ -1,0 +1,21 @@
+# Default values for kubevirt-vm chart
+
+vm:
+  name: example-vm
+  running: true
+  cores: 2
+  memory: "4Gi"
+  storageClass: "ibmc-vpc-file-metro-1000-iops"
+  diskSize: "30Gi"
+  image: "quay.io/kubevirt/fedora-cloud-container-disk-demo:latest"
+  username: "fedora"
+  password: ""
+  sshPublicKey: ""
+  cloudInit: ""
+  nodeSelector:
+    ibm-cloud.kubernetes.io/server-type: "physical"
+
+network:
+  type: "pod"
+  exposeSshService: true
+  serviceType: "ClusterIP"
