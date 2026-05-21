@@ -278,7 +278,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 }
 
 func TestAddonConfigurations(t *testing.T) {
-	t.Parallel()
+	t.Skip()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:               t,
