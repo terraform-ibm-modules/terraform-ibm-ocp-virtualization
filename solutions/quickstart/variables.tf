@@ -96,7 +96,7 @@ variable "cluster_name" {
 variable "openshift_version" {
   type        = string
   description = "Version of the OCP cluster to provision."
-  default     = "4.19"
+  default     = "4.20"
 
   validation {
     condition     = tonumber(var.openshift_version) >= 4.17
