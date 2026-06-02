@@ -79,9 +79,9 @@ locals {
 # Ensure to use addons versions supported by cluster version
 # See ibmcloud ks cluster addon versions
 locals {
-  ocp_version               = "4.19"
+  ocp_version               = "4.20"
   vpc_file_csi_driver       = "2.0"
-  openshift_data_foundation = "4.19.0"
+  openshift_data_foundation = "4.20.0"
   cluster_name              = "${var.prefix}-cluster"
 }
 
