@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.6.0"
+  version = "1.6.1"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -79,15 +79,15 @@ locals {
 # Ensure to use addons versions supported by cluster version
 # See ibmcloud ks cluster addon versions
 locals {
-  ocp_version               = "4.19"
+  ocp_version               = "4.20"
   vpc_file_csi_driver       = "2.0"
-  openshift_data_foundation = "4.19.0"
+  openshift_data_foundation = "4.20.0"
   cluster_name              = "${var.prefix}-cluster"
 }
 
 module "ocp_base" {
   source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version                             = "3.84.0"
+  version                             = "3.87.4"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
   tags                                = var.resource_tags

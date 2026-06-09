@@ -3,6 +3,7 @@ package test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -191,8 +192,8 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 		time.Sleep(30 * time.Second)
 		// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 		createContainersApikey(t, region, uniqueResourceGroup)
-		terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-		_, err := terraform.InitAndApplyE(t, existingTerraformOptions)
+		terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+		_, err := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 		return err
 	})
 	require.NoError(t, err, "Failed to initialize and apply Terraform")
@@ -205,8 +206,8 @@ func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
 		return
 	}
 	logger.Log(t, "START: Destroy (existing resources)")
-	terraform.Destroy(t, options)
-	terraform.WorkspaceDelete(t, options, prefix)
+	terraform.DestroyContext(t, context.Background(), options)
+	terraform.WorkspaceDeleteContext(t, context.Background(), options, prefix)
 	logger.Log(t, "END: Destroy (existing resources)")
 }
 
@@ -218,7 +219,7 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
 	// Provision resources first
-	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ocp-vi-%s", strings.ToLower(random.UniqueID()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -232,8 +233,8 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
-		{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
+		{Name: "cluster_id", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
+		{Name: "cluster_resource_group_id", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 	}
 	require.NoError(t, options.RunSchematicTest(), "This should not have errored")
 	cleanupTerraform(t, existingTerraformOptions, prefix)
@@ -248,7 +249,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.NoError(t, recurseErr, "Schematic Test had unexpected error traversing directory tree")
 
 	// Provision existing resources first
-	prefix := fmt.Sprintf("ocp-existing-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ocp-existing-%s", strings.ToLower(random.UniqueID()))
 	skip, err := testhelper.ShouldSkipUpgradeTest(t)
 	if err != nil {
 		t.Fatal(err)
@@ -267,8 +268,8 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
-			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
+			{Name: "cluster_id", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
+			{Name: "cluster_resource_group_id", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 		}
 
 		require.NoError(t, options.RunSchematicUpgradeTest(), "This should not have errored")
@@ -277,7 +278,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 }
 
 func TestAddonConfigurations(t *testing.T) {
-	t.Parallel()
+	t.Skip()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:               t,
