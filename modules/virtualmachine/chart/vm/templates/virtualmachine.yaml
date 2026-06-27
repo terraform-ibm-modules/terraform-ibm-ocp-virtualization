@@ -2,7 +2,7 @@ apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   name: {{ .Values.vm.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.vm.name }}
     kubevirt.io/vm: {{ .Values.vm.name }}

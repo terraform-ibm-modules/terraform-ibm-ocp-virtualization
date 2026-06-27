@@ -2,7 +2,7 @@ apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume
 metadata:
   name: {{ .Values.vm.name }}-rootdisk
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.vm.name }}
     kubevirt.io/vm: {{ .Values.vm.name }}
