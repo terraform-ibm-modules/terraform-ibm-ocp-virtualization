@@ -15,7 +15,7 @@ vm:
   nodeSelector:
     ibm-cloud.kubernetes.io/server-type: "physical"
 
-namespace: "default"
+namespace: "vm-ns"
 
 network:
   type: "pod"

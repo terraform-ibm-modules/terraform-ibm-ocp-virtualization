@@ -22,24 +22,24 @@ This module configures Openshift Virtualization on an IBM Cloud Red Hat OpenShif
 ## Overview
 <ul>
   <li><a href="#terraform-ibm-ocp-virtualization">terraform-ibm-ocp-virtualization</a></li>
-  <li><a href="./modules">Submodules</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/modules">Submodules</a>
     <ul>
-      <li><a href="./modules/virtualmachine">virtualmachine</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/modules/virtualmachine">virtualmachine</a></li>
     </ul>
   </li>
-  <li><a href="./examples">Examples</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/examples">Examples</a>
     <ul>
       <li>
-        <a href="./examples/basic">Basic example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/examples/basic">Basic example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=ocp-virtualization-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
     </ul>
     ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
   </li>
-  <li><a href="./solutions">Deployable Architectures</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/solutions">Deployable Architectures</a>
     <ul>
-      <li><a href="./solutions/fully-configurable">Cloud automation for OpenShift Virtualization (Fully configurable)</a></li>
-      <li><a href="./solutions/quickstart">Cloud automation for OpenShift Virtualization (Quickstart)</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/solutions/fully-configurable">Cloud automation for OpenShift Virtualization (Fully configurable)</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/solutions/quickstart">Cloud automation for OpenShift Virtualization (Quickstart)</a></li>
     </ul>
   </li>
   <li><a href="#contributing">Contributing</a></li>
