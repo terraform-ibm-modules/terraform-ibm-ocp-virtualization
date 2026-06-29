@@ -22,6 +22,11 @@ This module configures Openshift Virtualization on an IBM Cloud Red Hat OpenShif
 ## Overview
 <ul>
   <li><a href="#terraform-ibm-ocp-virtualization">terraform-ibm-ocp-virtualization</a></li>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/modules">Submodules</a>
+    <ul>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/modules/virtualmachine">virtualmachine</a></li>
+    </ul>
+  </li>
   <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/tree/main/examples">Examples</a>
     <ul>
       <li>
