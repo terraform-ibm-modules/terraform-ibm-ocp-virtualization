@@ -105,7 +105,7 @@ module "ocp_base" {
   version                             = "3.90.0"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
-  tags                                = var.cluster_resource_tags
+  resource_tags                       = var.cluster_resource_tags
   cluster_name                        = local.cluster_name
   force_delete_storage                = true
   vpc_id                              = module.vpc.vpc_id
