@@ -42,7 +42,7 @@ module "vpc" {
   region              = var.region
   name                = "vpc"
   prefix              = var.prefix
-  tags                = var.vpc_resource_tags
+  resource_tags       = var.vpc_resource_tags
   subnets             = local.subnets
   use_public_gateways = local.public_gateway
   network_acls = [{
