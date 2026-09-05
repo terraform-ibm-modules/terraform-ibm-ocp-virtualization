@@ -1,0 +1,75 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: {{ .Values.vm.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.vm.name }}
+    kubevirt.io/vm: {{ .Values.vm.name }}
+spec:
+  running: {{ .Values.vm.running }}
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: {{ .Values.vm.name }}
+        app: {{ .Values.vm.name }}
+    spec:
+      domain:
+        cpu:
+          cores: {{ .Values.vm.cores }}
+        memory:
+          guest: {{ .Values.vm.memory }}
+        devices:
+          disks:
+            - name: rootdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          interfaces:
+            - name: default
+              masquerade: {}
+          networkInterfaceMultiqueue: true
+        resources:
+          requests:
+            memory: {{ .Values.vm.memory }}
+      {{- if .Values.vm.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.vm.nodeSelector | nindent 8 }}
+      {{- end }}
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - name: rootdisk
+          dataVolume:
+            name: {{ .Values.vm.name }}-rootdisk
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              {{- if .Values.vm.username }}
+              user: {{ .Values.vm.username }}
+              {{- end }}
+              {{- if .Values.vm.password }}
+              password: {{ .Values.vm.password }}
+              chpasswd:
+                expire: false
+              {{- end }}
+              {{- if .Values.vm.sshPublicKey }}
+              ssh_authorized_keys:
+                - {{ .Values.vm.sshPublicKey }}
+              {{- end }}
+              {{- if .Values.vm.cloudInit }}
+              {{ .Values.vm.cloudInit | nindent 14 }}
+              {{- else }}
+              # Default cloud-init configuration
+              package_update: true
+              packages:
+                - qemu-guest-agent
+              runcmd:
+                - systemctl enable qemu-guest-agent
+                - systemctl start qemu-guest-agent
+              {{- end }}

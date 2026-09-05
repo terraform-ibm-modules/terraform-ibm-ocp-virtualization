@@ -1,0 +1,20 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: {{ .Values.vm.name }}-rootdisk
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.vm.name }}
+    kubevirt.io/vm: {{ .Values.vm.name }}
+spec:
+  source:
+    registry:
+      url: "docker://{{ .Values.vm.image }}"
+  storage:
+    storageClassName: {{ .Values.vm.storageClass }}
+    accessModes:
+      - ReadWriteMany
+    volumeMode: Filesystem
+    resources:
+      requests:
+        storage: {{ .Values.vm.diskSize }}
