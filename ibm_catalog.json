@@ -205,12 +205,12 @@
               "required": true,
               "options": [
                 {
-                  "displayname": "4.20",
-                  "value": "4.20"
-                },
-                {
                   "displayname": "4.21",
                   "value": "4.21"
+                },
+                {
+                  "displayname": "4.20",
+                  "value": "4.20"
                 },
                 {
                   "displayname": "4.19",
@@ -223,10 +223,6 @@
                 {
                   "displayname": "4.17",
                   "value": "4.17"
-                },
-                {
-                  "displayname": "4.16",
-                  "value": "4.16"
                 }
               ]
             },
@@ -664,12 +660,12 @@
               "description": "Version of the OpenShift cluster to provision.",
               "options": [
                 {
-                  "displayname": "4.20",
-                  "value": "4.20"
-                },
-                {
                   "displayname": "4.21",
                   "value": "4.21"
+                },
+                {
+                  "displayname": "4.20",
+                  "value": "4.20"
                 },
                 {
                   "displayname": "4.19",
@@ -682,10 +678,6 @@
                 {
                   "displayname": "4.17",
                   "value": "4.17"
-                },
-                {
-                  "displayname": "4.16",
-                  "value": "4.16"
                 }
               ]
             },
