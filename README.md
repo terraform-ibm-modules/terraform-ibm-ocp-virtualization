@@ -1,5 +1,7 @@
 # Terraform IBM OpenShift Virtualization module
 
+🕸️ Archived: This repo is no longer maintained and has been archived. You can use [terraform-ibm-base-ocp-vpc](https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/tree/main) module to deploy a Virtualization Cluster.
+
 [![Graduated (Supported)](https://img.shields.io/badge/Status-Graduated%20(Supported)-brightgreen)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-ocp-virtualization?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -15,7 +17,6 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 -->
 
 This module configures Openshift Virtualization on an IBM Cloud Red Hat OpenShift Container Platform.
-
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
@@ -41,7 +42,6 @@ This module configures Openshift Virtualization on an IBM Cloud Red Hat OpenShif
 </ul>
 <!-- END OVERVIEW HOOK -->
 
-
 <!--
 If this repo contains any reference architectures, uncomment the heading below and link to them.
 (Usually in the `/reference-architectures` directory.)
@@ -49,7 +49,6 @@ See "Reference architecture" in the public documentation at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=reference-architecture
 -->
 <!-- ## Reference architectures -->
-
 
 <!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-ocp-virtualization
@@ -109,14 +108,15 @@ module "virtualization" {
 ### Required access policies
 
 ### Required IAM access policies
+
 You need the following permissions to run this module.
 
 - Service
-    - **Resource group only**
-        - `Viewer` access on the specific resource group
-    - **Kubernetes** service
-        - `Viewer` platform access
-        - `Manager` service access
+  - **Resource group only**
+    - `Viewer` access on the specific resource group
+  - **Kubernetes** service
+    - `Viewer` platform access
+    - `Manager` service access
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
