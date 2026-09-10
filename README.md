@@ -1,6 +1,6 @@
 # Terraform IBM OpenShift Virtualization module
 
-🕸️ Archived: This repo is no longer maintained and is archived. Please update your terraform code to use [terraform-ibm-base-ocp-vpc](https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/tree/main) module.
+🕸️ Archived: This repo is no longer maintained and has been archived. You can use [terraform-ibm-base-ocp-vpc](https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/tree/main) module to deploy a Virtualization Cluster.
 
 [![Graduated (Supported)](https://img.shields.io/badge/Status-Graduated%20(Supported)-brightgreen)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-ocp-virtualization?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-ocp-virtualization/releases/latest)
